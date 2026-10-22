@@ -1,0 +1,74 @@
+.shelf {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+  A book: its pixel cover (drawn in code) as the background, the title written on it.
+  Sizes are room pixels × --s, so the type scales with the room. The text starts right of
+  the 4px spine.
+*/
+.book {
+  /* One pixel of the cover, in CSS px: the room's scale times the book's size (--k, 1 = 26 px wide). */
+  --book-px: calc(var(--s, 1px) * var(--k, 1));
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(1 * var(--book-px));
+  padding: calc(6 * var(--book-px)) calc(1.5 * var(--book-px)) 0 calc(5.5 * var(--book-px));
+  overflow: hidden;
+  background: center / 100% 100% no-repeat;
+  image-rendering: pixelated;
+  color: #f3eee6;
+  text-align: left;
+  font-family: 'Pixelify Sans', var(--font-text);
+  line-height: 1.1;
+  transition: translate 160ms ease, filter 160ms ease;
+  /* Lets the type below size itself to the book's width (cqw). */
+  container-type: inline-size;
+}
+
+/*
+  Type size: the room's scale, but never bigger than lets the longest word fit the space
+  right of the spine (~76% of the book; the pixel font's letters are ~0.56em wide).
+*/
+.title {
+  font-size: min(max(10px, calc(4.4 * var(--book-px))), calc(76cqw / (var(--title-chars, 6) * 0.56)));
+  font-weight: 600;
+  text-shadow: 0 calc(0.4 * var(--book-px)) 0 rgba(0, 0, 0, 0.45);
+}
+
+.subtitle {
+  font-size: min(max(8px, calc(3 * var(--book-px))), calc(76cqw / (var(--sub-chars, 8) * 0.56)));
+  opacity: 0.85;
+}
+
+.onShelf {
+  position: absolute;
+}
+
+/* A book being looked at slides up off the shelf. */
+@media (hover: hover) and (pointer: fine) {
+  .book:hover {
+    translate: 0 calc(-2.5 * var(--s, 1px));
+    filter: brightness(1.15);
+  }
+}
+
+.book:active {
+  filter: brightness(0.8);
+}
+
+.book:focus-visible {
+  outline: 2px dashed #ffd27a;
+  outline-offset: 2px;
+  translate: 0 calc(-2.5 * var(--s, 1px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book {
+    transition: none;
+  }
+}

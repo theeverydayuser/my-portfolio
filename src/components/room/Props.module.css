@@ -1,0 +1,41 @@
+.prop {
+  cursor: grab;
+  touch-action: none;
+}
+
+.prop:focus-visible {
+  outline: 2px dashed #ffd27a;
+  outline-offset: 3px;
+}
+
+/* Lifted while held: a little bigger, with a shadow that drops away from it. */
+.held {
+  cursor: grabbing;
+  scale: 1.08;
+  transform-origin: 50% 100%;
+}
+
+.held img {
+  filter: brightness(1) drop-shadow(0 12px 6px rgba(0, 0, 0, 0.45));
+}
+
+/* Being moved by another visitor right now: it wobbles in their hand and glows. */
+.remote {
+  animation: carried 300ms ease-in-out infinite alternate;
+}
+
+.remote img {
+  filter: brightness(1) drop-shadow(0 0 6px rgba(255, 210, 122, 0.8));
+}
+
+@keyframes carried {
+  to {
+    rotate: 4deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .remote {
+    animation: none;
+  }
+}

@@ -1,0 +1,11 @@
+node_modules
+dist
+.claude/settings.local.json
+.DS_Store
+Thumbs.db
+*.log
+.env*
+
+# Local only: reference art (has names that must not be public) and AI tooling
+art/
+.claude/

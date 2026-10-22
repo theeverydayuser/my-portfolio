@@ -1,0 +1,150 @@
+/* A pixel speech bubble: square, dark like the room's panels, with a stepped pointer. */
+.callout {
+  --bubble: #171226;
+  position: absolute;
+  z-index: 20;
+  width: min(270px, 62vw);
+  padding: 12px 14px 10px;
+  background: var(--bubble);
+  color: #f3eee6;
+  font-family: 'Pixelify Sans', var(--font-text);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.06), 6px 6px 0 rgba(0, 0, 0, 0.35), 0 10px 30px rgba(0, 0, 0, 0.45);
+  animation: pop 180ms steps(3, end);
+}
+
+/* The pointer: a pixel triangle on the side facing the target. */
+.callout::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 8px;
+  background: var(--bubble);
+  clip-path: polygon(0 0, 100% 0, 71% 50%, 57% 50%, 57% 100%, 43% 100%, 43% 50%, 29% 50%);
+}
+
+.left {
+  translate: -100% -50%;
+}
+
+.left::after {
+  top: calc(50% + var(--arrow-shift-y, 0px));
+  right: -11px;
+  translate: 0 -50%;
+  rotate: -90deg;
+}
+
+.top {
+  translate: -50% -100%;
+}
+
+.top::after {
+  left: calc(50% + var(--arrow-shift, 0px));
+  bottom: -8px;
+  translate: -50% 0;
+}
+
+.bottom {
+  translate: -50% 0;
+}
+
+.bottom::after {
+  left: calc(50% + var(--arrow-shift, 0px));
+  top: -8px;
+  translate: -50% 0;
+  rotate: 180deg;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    scale: 0.94;
+  }
+}
+
+.text {
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.count {
+  margin-right: auto;
+  font-size: 12px;
+  color: rgba(243, 238, 230, 0.55);
+}
+
+.primary,
+.secondary {
+  padding: 5px 11px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.primary {
+  margin-left: auto;
+  background: #ffd27a;
+  color: #1a1020;
+}
+
+.count + .primary,
+.count + .secondary {
+  margin-left: 0;
+}
+
+.secondary {
+  color: rgba(243, 238, 230, 0.75);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .primary:hover {
+    background: #ffe2a6;
+  }
+
+  .secondary:hover {
+    color: #f3eee6;
+  }
+}
+
+.primary:active,
+.secondary:active {
+  filter: brightness(0.85);
+}
+
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: 2px dashed #ffd27a;
+  outline-offset: 2px;
+}
+
+/* The thing the callout is about, glowing gently in the lamp's colour. */
+.glow {
+  position: absolute;
+  z-index: 19;
+  pointer-events: none;
+  box-shadow: 0 0 0 calc(0.8 * var(--s)) rgba(255, 210, 122, 0.9), 0 0 calc(7 * var(--s)) rgba(255, 190, 90, 0.5);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .callout {
+    animation: none;
+  }
+
+  .glow {
+    animation: none;
+    opacity: 0.8;
+  }
+}

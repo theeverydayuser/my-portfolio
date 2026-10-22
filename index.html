@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- White phone status bar and browser chrome (top and bottom strips). -->
+    <meta name="theme-color" content="#0f0b18" />
+    <!--
+      Opened from the Home Screen, the site runs without browser bars. The status bar
+      uses the default (opaque, theme-coloured) style: on iOS 26, black-translucent
+      makes iOS blur the top of the page and leaves a gap at the bottom (WebKit bug 301108).
+    -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Mide" />
+    <title>Mide Adeshina — Portfolio</title>
+    <meta name="description" content="Portfolio of Mide Adeshina, design engineer." />
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..600&family=Pixelify+Sans:wght@400..600&display=swap"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,528 @@
+/* Night-room colours, shared by the pixel UI drawn over the canvas. */
+.room {
+  --pixel-font: 'Pixelify Sans', var(--font-text);
+  --ink: #f3eee6;
+  --glow: #ffd27a;
+  --panel: #171226;
+  --lcd-bg: #06130d;
+  --lcd-text: #7dffae;
+}
+
+.room {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #0b0910;
+}
+
+/* Phones: the room is taller than the screen (its column of books sets the height), so it scrolls. */
+.scrolls {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* (.scene.tall, so it outranks .scene below.) Size comes from Room.jsx. */
+.scene.tall {
+  position: relative;
+  inset: auto;
+}
+
+/*
+  The scene is the room's own shape (W × H room pixels). --s is CSS px per room pixel,
+  set by Room.jsx; every size below is N × --s, every position a percentage of the room.
+*/
+.scene {
+  position: absolute;
+  inset: 0;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Clicks pass through to the person and the buttons layered with the canvases. */
+  pointer-events: none;
+  /* Keep the pixels square and sharp when scaled up. */
+  image-rendering: pixelated;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  /* The layer itself lets clicks through (to the person below it); the things on it don't. */
+  pointer-events: none;
+}
+
+/* :where() keeps this at zero specificity, so a part's own pointer-events (the tour's glow) wins. */
+:where(.overlay) > * {
+  pointer-events: auto;
+}
+
+/* ── Monitor ─────────────────────────────────────────── */
+
+.monitor {
+  position: absolute;
+  overflow: hidden;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.terminal {
+  position: absolute;
+  inset: 0;
+  padding: calc(4 * var(--s)) calc(5 * var(--s)) 0;
+  background: rgba(6, 8, 22, 0.55);
+  color: #9be8ff;
+  font-family: var(--pixel-font);
+  font-size: max(10px, calc(4 * var(--s)));
+  line-height: 1.55;
+  white-space: pre-wrap;
+  text-shadow: 0 0 calc(1.5 * var(--s)) rgba(120, 220, 255, 0.55);
+}
+
+.cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-left: 0.15em;
+  vertical-align: text-bottom;
+  background: currentColor;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(180deg, transparent 0 calc(0.5 * var(--s)), rgba(0, 0, 0, 0.16) 0 var(--s));
+}
+
+/* A book's preview on the monitor: fades in, with a caption along the bottom. */
+.preview {
+  position: absolute;
+  inset: 0;
+  background: #0b0d1e;
+  animation: preview-in 180ms ease-out;
+}
+
+@keyframes preview-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.titleCard {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(1.5 * var(--s));
+  background: radial-gradient(circle at 50% 40%, #232a6a, #0b0d1e 70%);
+  color: #c9d2ff;
+  font-family: var(--pixel-font);
+  font-size: calc(4.5 * var(--s));
+}
+
+.titleCardName {
+  color: var(--ink);
+  font-size: calc(11 * var(--s));
+  font-weight: 600;
+}
+
+.titleCardSoon {
+  margin-top: calc(2 * var(--s));
+  color: var(--glow);
+  font-size: calc(3.6 * var(--s));
+}
+
+.caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: calc(4 * var(--s));
+  padding: calc(1.5 * var(--s)) calc(3 * var(--s));
+  background: rgba(8, 9, 22, 0.78);
+  color: var(--ink);
+  font-family: var(--pixel-font);
+  font-size: max(12px, calc(3.6 * var(--s)));
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.captionHint {
+  color: var(--glow);
+}
+
+/* Upright screens: the whole video across the width, and the caption along the top. */
+.videoFit {
+  object-fit: contain;
+}
+
+.upright .caption {
+  top: 0;
+  bottom: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview {
+    animation: none;
+  }
+}
+
+/* ── Bookcase sign and visit counter ─────────────────── */
+
+.shelfSign {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: calc(3 * var(--s));
+  padding: 0 calc(3 * var(--s));
+  background: #151d3a;
+  box-shadow: 0 var(--s) calc(2 * var(--s)) rgba(0, 0, 0, 0.5), inset 0 calc(0.5 * var(--s)) 0 rgba(255, 255, 255, 0.07);
+  color: var(--ink);
+  font-family: var(--pixel-font);
+  font-size: calc(7 * var(--s));
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.shelfSign .folder {
+  flex: none;
+  width: calc(7 * var(--s));
+  height: calc(6 * var(--s));
+}
+
+/* Phones: the bookcase is one book wide, so the sign stacks its words. */
+.signCompact {
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(0.5 * var(--s));
+  padding: 0;
+  font-size: calc(5 * var(--s));
+  text-align: center;
+}
+
+.signCompact .folder {
+  width: calc(5 * var(--s));
+  height: calc(4 * var(--s));
+}
+
+.signArrow {
+  margin-left: auto;
+  opacity: 0.85;
+}
+
+.lcd {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--lcd-bg);
+  box-shadow: inset 0 0 0 calc(0.5 * var(--s)) #000, 0 0 calc(3 * var(--s)) rgba(125, 255, 174, 0.18);
+  color: var(--lcd-text);
+  font-family: var(--pixel-font);
+  font-size: max(10px, calc(3.4 * var(--s)));
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-shadow: 0 0 calc(1.2 * var(--s)) rgba(125, 255, 174, 0.7);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.here {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  color: var(--glow);
+  text-shadow: 0 0 0.4em rgba(255, 210, 122, 0.7);
+}
+
+.liveDot {
+  width: 0.6em;
+  height: 0.6em;
+  background: #ff5a4f;
+  box-shadow: 0 0 0.5em #ff5a4f;
+  animation: blink 1.2s steps(1) infinite;
+}
+
+/* ── Portrait click area and shelf labels ────────────── */
+
+.frameHit {
+  position: absolute;
+  z-index: 2;
+  display: block;
+}
+
+.skillWord {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  padding-left: calc(1 * var(--s));
+  color: rgba(243, 238, 230, 0.86);
+  font-family: var(--pixel-font);
+  font-size: calc(3.4 * var(--s));
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ── Things that open something / can be moved ───────── */
+
+/* Anchored at the bottom centre: left/top is the spot the thing stands on. */
+.standing {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  translate: -50% -100%;
+}
+
+.objectArt {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  transition: filter 140ms ease;
+}
+
+.soon {
+  cursor: default;
+}
+
+/* Pixel tooltip with stepped corners, above the thing it names. */
+.tip {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: calc(100% + 2 * var(--s));
+  translate: -50% var(--s);
+  padding: 4px 9px;
+  background: var(--panel);
+  color: var(--ink);
+  font-family: var(--pixel-font);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  clip-path: polygon(0 3px, 3px 3px, 3px 0, calc(100% - 3px) 0, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0 calc(100% - 3px));
+  transition: opacity 120ms ease, translate 120ms ease;
+}
+
+/* Hover: the thing lights up in the lamp's warm glow and names itself. */
+@media (hover: hover) and (pointer: fine) {
+  .standing:hover .objectArt {
+    filter: brightness(1.15) drop-shadow(0 0 calc(1.5 * var(--s)) rgba(255, 200, 110, 0.8));
+  }
+
+  .frameHit:hover {
+    box-shadow: 0 0 0 calc(0.7 * var(--s)) rgba(255, 210, 122, 0.85), 0 0 calc(5 * var(--s)) rgba(255, 190, 90, 0.35);
+  }
+
+  .standing:hover .tip,
+  .frameHit:hover .tip {
+    opacity: 1;
+    translate: -50% 0;
+  }
+}
+
+.opener:focus-visible {
+  outline: 2px dashed var(--glow);
+  outline-offset: 2px;
+}
+
+.opener:focus-visible .tip {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+.standing:active .objectArt {
+  filter: brightness(0.75);
+}
+
+/* ── "About Me" callout over the portrait ───────────── */
+
+/* A small warm bubble above the portrait, bobbing gently. */
+.aboutBubble {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 3 * var(--s));
+  translate: -50% 0;
+  padding: 3px 8px;
+  background: #ffd27a;
+  color: #1a1020;
+  font-family: var(--pixel-font);
+  font-size: max(12px, calc(3.8 * var(--s)));
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35);
+  animation: bob 2.4s ease-in-out infinite;
+}
+
+.aboutBubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  translate: -50% 0;
+  width: 10px;
+  height: 6px;
+  background: #ffd27a;
+  clip-path: polygon(0 0, 100% 0, 70% 50%, 60% 50%, 60% 100%, 40% 100%, 40% 50%, 30% 50%);
+}
+
+@keyframes bob {
+  50% {
+    translate: -50% calc(-1 * var(--s));
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .frameHit:hover .aboutBubble {
+    background: #ffe2a6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aboutBubble {
+    animation: none;
+  }
+}
+
+/* ── Mide at the desk ────────────────────────────────── */
+
+.person {
+  position: absolute;
+  display: block;
+}
+
+.personPart {
+  position: absolute;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .person:hover .personPart {
+    filter: brightness(1.12);
+  }
+
+  .person:hover .tip {
+    opacity: 1;
+    translate: -50% 0;
+  }
+}
+
+.person:focus-visible {
+  outline: 2px dashed var(--glow);
+  outline-offset: 2px;
+}
+
+/* ── Record player ───────────────────────────────────── */
+
+.player {
+  z-index: 3;
+}
+
+/* Notes drifting up off the record while it plays. */
+.notes span {
+  position: absolute;
+  bottom: 60%;
+  left: 40%;
+  color: var(--glow);
+  font-family: var(--pixel-font);
+  font-size: calc(5 * var(--s));
+  line-height: 1;
+  text-shadow: 0 0 calc(1.5 * var(--s)) rgba(255, 200, 110, 0.8);
+  opacity: 0;
+  animation: note-drift 2.4s linear infinite;
+}
+
+.notes span:nth-child(2) {
+  left: 20%;
+  animation-delay: 0.8s;
+}
+
+.notes span:nth-child(3) {
+  left: 60%;
+  animation-delay: 1.6s;
+}
+
+@keyframes note-drift {
+  0% {
+    opacity: 0;
+    translate: 0 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    translate: calc(4 * var(--s)) calc(-18 * var(--s));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notes span {
+    animation: none;
+    opacity: 0.8;
+  }
+}
+
+/* ── ?debug ──────────────────────────────────────────── */
+
+.debug {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  font: 10px/1 monospace;
+}
+
+.debugBox {
+  position: absolute;
+  outline: 1px solid #ff3df2;
+  color: #ff3df2;
+}
+
+.debugSurface {
+  position: absolute;
+  border-top: 2px dashed #3dfff2;
+  color: #3dfff2;
+}
+
+.debugInfo {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  translate: -50% 0;
+  padding: 4px 8px;
+  background: #000;
+  color: #3dfff2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor,
+  .liveDot {
+    animation: none;
+  }
+}

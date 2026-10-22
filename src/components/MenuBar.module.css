@@ -1,0 +1,181 @@
+/*
+  Tahoe menu bar: no bar fill at all, just text over the wallpaper.
+  Menus drop down as clear-glass panels.
+*/
+.bar {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--menubar-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(10 * var(--u-base));
+  /* Always light: it sits over the night-time room in either appearance. */
+  color: #f5f5f7;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-size: max(13px, calc(14 * var(--u-base)));
+  line-height: 1;
+}
+
+.menus {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.menuSlot {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  height: calc(100% - 6px);
+  padding: 0 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  outline: none;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.titleOpen,
+.title:focus-visible {
+  background: var(--menubar-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .title:hover {
+    background: var(--menubar-hover);
+  }
+}
+
+.logo {
+  width: 15px;
+  height: 15px;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  min-width: 230px;
+  padding: 5px;
+  border-radius: 12px;
+  background: var(--menu-bg);
+  color: var(--menu-text);
+  text-shadow: none;
+  box-shadow: var(--glass-highlight), 0 12px 40px rgba(0, 0, 0, 0.22);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(16px) saturate(170%);
+  animation: menu-in 120ms ease-out;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 5px 10px 5px 4px;
+  border-radius: 6px;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+}
+
+/* macOS highlights the item under the pointer (or keyboard focus) in the accent colour. */
+.item:focus-visible {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .item:hover {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+}
+
+.item[aria-disabled='true'] {
+  color: var(--menu-muted);
+  background: none;
+}
+
+.check {
+  flex: none;
+  width: 18px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.separator {
+  height: 1px;
+  margin: 5px 10px;
+  background: var(--menu-separator);
+}
+
+.heading {
+  padding: 6px 10px 3px 22px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--menu-muted);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-right: 6px;
+}
+
+.statusIcon {
+  width: 17px;
+  height: 13px;
+}
+
+.battery {
+  width: 25px;
+  height: 12px;
+}
+
+.clock {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu {
+    animation: none;
+  }
+}
+
+/* Tablets keep the bar but drop the date; phones get no menu bar. */
+@media (max-width: 899px) {
+  .clock span:first-child {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .bar {
+    display: none;
+  }
+}

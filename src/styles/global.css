@@ -1,0 +1,272 @@
+/*
+  Design tokens measured from the Figma exports.
+  Desktop frame: 1728 × 857. Case-study window: 1353 wide.
+*/
+:root {
+  /*
+    Scale unit: 1 design pixel of the 1728 × 857 Figma frame, fitted to the viewport.
+    Every size is written as calc(N * var(--u)) so smaller screens show the same composition.
+  */
+  --u-base: clamp(0.6px, min(calc(100vw / 1728), calc(100vh / 857)), 1.25px);
+  --u: var(--u-base);
+
+  /* Type */
+  --font-text: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+  /* Desktop */
+  --desktop-frame-w: 1728;
+  --desktop-frame-h: 857;
+  --desktop-label: #ffffff;
+  --menubar-h: max(26px, calc(30 * var(--u-base)));
+
+  /*
+    Colours, light appearance. Dark values are below; [data-theme] on <html> forces one,
+    otherwise the system setting decides.
+  */
+  color-scheme: light;
+  --accent: #0a64d6;
+  --accent-hover: #0857bb;
+  --on-accent: #ffffff;
+
+  /* Clear glass (macOS Tahoe): barely tinted, light blur, a soft inner highlight instead of a border. */
+  --glass-bg: rgba(255, 255, 255, 0.16);
+  --glass-strong: rgba(246, 246, 246, 0.72);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.45), inset 0 0 0 0.5px rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 30px rgba(0, 0, 0, 0.14);
+  --dock-dot: rgba(0, 0, 0, 0.55);
+  --tooltip-bg: rgba(40, 40, 40, 0.62);
+  --tooltip-text: #ffffff;
+  --menubar-hover: rgba(0, 0, 0, 0.1);
+  --menu-bg: rgba(246, 246, 246, 0.78);
+  --menu-text: #1d1d1f;
+  --menu-muted: rgba(0, 0, 0, 0.35);
+  --menu-separator: rgba(0, 0, 0, 0.1);
+
+  --wallpaper-light: #b2b2b2;
+  --wallpaper-mid: #a1a1a1;
+  --wallpaper-dark: #8e8e8e;
+
+  /* Window */
+  --window-bg: #f5f5f5;
+  --window-shadow: 0 24px 70px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.08);
+  --window-shadow-inactive: 0 12px 36px rgba(0, 0, 0, 0.16);
+  --titlebar-bg: #ffffff;
+  --titlebar-text: #86868b;
+  --light-red: #fd5d5c;
+  --light-yellow: #fac900;
+  --light-green: #34c75a;
+  --light-idle: #d0d0d0;
+  --light-glyph: rgba(0, 0, 0, 0.55);
+
+  /* Window content */
+  --cs-card-bg: #ffffff;
+  --cs-heading: #000000;
+  --cs-body: #505050;
+  --text-strong: #333333;
+  --surface-sunken: #ebebeb;
+  --surface-sidebar: #ececec;
+  --selection-idle: rgba(0, 0, 0, 0.08);
+  --row-separator: rgba(0, 0, 0, 0.07);
+  --link: #0a64d6;
+  --note-accent: #2b6a96;
+}
+
+/* Dark appearance: the same list twice, for the system setting and for a forced choice. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --accent: #0a84ff;
+    --accent-hover: #3b9bff;
+    --glass-bg: rgba(40, 40, 40, 0.22);
+    --glass-strong: rgba(40, 40, 40, 0.72);
+    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 0 0.5px rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    --dock-dot: rgba(255, 255, 255, 0.7);
+    --tooltip-bg: rgba(60, 60, 60, 0.7);
+    --menubar-hover: rgba(255, 255, 255, 0.16);
+    --menu-bg: rgba(40, 40, 40, 0.78);
+    --menu-text: #f5f5f7;
+    --menu-muted: rgba(255, 255, 255, 0.35);
+    --menu-separator: rgba(255, 255, 255, 0.12);
+    --wallpaper-light: #4a4a4c;
+    --wallpaper-mid: #3a3a3c;
+    --wallpaper-dark: #2a2a2c;
+    --window-bg: #1e1e1e;
+    --window-shadow: 0 24px 70px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --window-shadow-inactive: 0 12px 36px rgba(0, 0, 0, 0.4);
+    --titlebar-bg: #2a2a2a;
+    --titlebar-text: #9a9a9f;
+    --light-idle: #4a4a4a;
+    --cs-card-bg: #2a2a2a;
+    --cs-heading: #f5f5f7;
+    --cs-body: #b5b5ba;
+    --text-strong: #e5e5ea;
+    --surface-sunken: #262626;
+    --surface-sidebar: #242424;
+    --selection-idle: rgba(255, 255, 255, 0.1);
+    --row-separator: rgba(255, 255, 255, 0.08);
+    --link: #3b9bff;
+    --note-accent: #6fb0dc;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --accent: #0a84ff;
+  --accent-hover: #3b9bff;
+  --glass-bg: rgba(40, 40, 40, 0.22);
+  --glass-strong: rgba(40, 40, 40, 0.72);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 0 0.5px rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  --dock-dot: rgba(255, 255, 255, 0.7);
+  --tooltip-bg: rgba(60, 60, 60, 0.7);
+  --menubar-hover: rgba(255, 255, 255, 0.16);
+  --menu-bg: rgba(40, 40, 40, 0.78);
+  --menu-text: #f5f5f7;
+  --menu-muted: rgba(255, 255, 255, 0.35);
+  --menu-separator: rgba(255, 255, 255, 0.12);
+  --wallpaper-light: #4a4a4c;
+  --wallpaper-mid: #3a3a3c;
+  --wallpaper-dark: #2a2a2c;
+  --window-bg: #1e1e1e;
+  --window-shadow: 0 24px 70px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --window-shadow-inactive: 0 12px 36px rgba(0, 0, 0, 0.4);
+  --titlebar-bg: #2a2a2a;
+  --titlebar-text: #9a9a9f;
+  --light-idle: #4a4a4a;
+  --cs-card-bg: #2a2a2a;
+  --cs-heading: #f5f5f7;
+  --cs-body: #b5b5ba;
+  --text-strong: #e5e5ea;
+  --surface-sunken: #262626;
+  --surface-sidebar: #242424;
+  --selection-idle: rgba(255, 255, 255, 0.1);
+  --row-separator: rgba(255, 255, 255, 0.08);
+  --link: #3b9bff;
+  --note-accent: #6fb0dc;
+}
+
+/*
+  Window sizes live on the window layer so they use its own, smaller scale:
+  the popup takes ~70% of the screen width and ~80% of its height.
+*/
+[data-window-layer] {
+  --window-scale: 0.9;
+  --u: calc(var(--u-base) * var(--window-scale));
+
+  --window-max-w: calc(1353 * var(--u));
+  --window-radius: calc(28 * var(--u));
+  --titlebar-h: calc(46 * var(--u));
+
+  /* Case study */
+  --cs-gutter: calc(27 * var(--u));
+  --cs-card-radius: calc(17 * var(--u));
+  --cs-card-pad: calc(27 * var(--u));
+  --cs-gap: calc(18 * var(--u));
+  --cs-meta-radius: calc(6 * var(--u));
+}
+
+/* Tablets and phones use their own layouts at a fixed, comfortable size. */
+@media (max-width: 899px) {
+  :root {
+    --u-base: 0.8px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    /* Phones have no menu bar; the iOS-style status bar comes later. */
+    --menubar-h: 0px;
+  }
+
+  [data-window-layer] {
+    --window-scale: 1;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* White behind the phone status bar and toolbars (top and bottom strips). */
+html {
+  background: var(--titlebar-bg);
+}
+
+body {
+  margin: 0;
+  /* Text can't be selected, except contact details ([data-copyable]). */
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+  font-family: var(--font-text);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+picture {
+  display: block;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  /* No dragging images out, and no long-press save menu on phones. */
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  /* macOS controls use the arrow; only links get the hand. */
+  cursor: default;
+}
+
+a {
+  cursor: pointer;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+[data-copyable],
+[data-copyable] * {
+  -webkit-user-select: text;
+  user-select: text;
+  cursor: text;
+}
+
+[data-copyable] a {
+  cursor: pointer;
+}
