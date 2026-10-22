@@ -209,21 +209,6 @@
   height: calc(6 * var(--s));
 }
 
-/* Phones: the bookcase is one book wide, so the sign stacks its words. */
-.signCompact {
-  flex-direction: column;
-  justify-content: center;
-  gap: calc(0.5 * var(--s));
-  padding: 0;
-  font-size: calc(5 * var(--s));
-  text-align: center;
-}
-
-.signCompact .folder {
-  width: calc(5 * var(--s));
-  height: calc(4 * var(--s));
-}
-
 .signArrow {
   margin-left: auto;
   opacity: 0.85;
@@ -269,20 +254,6 @@
   position: absolute;
   z-index: 2;
   display: block;
-}
-
-.skillWord {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  padding-left: calc(1 * var(--s));
-  color: rgba(243, 238, 230, 0.86);
-  font-family: var(--pixel-font);
-  font-size: calc(3.4 * var(--s));
-  line-height: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  pointer-events: none;
 }
 
 /* ── Things that open something / can be moved ───────── */
@@ -339,7 +310,8 @@
   }
 
   .standing:hover .tip,
-  .frameHit:hover .tip {
+  .frameHit:hover .tip,
+  .appIcon:hover .tip {
     opacity: 1;
     translate: -50% 0;
   }
@@ -359,6 +331,56 @@
   filter: brightness(0.75);
 }
 
+/* ── App icons on the top shelf (painted in; these carry their names) ── */
+
+.appIcon {
+  position: absolute;
+  z-index: 2;
+}
+
+.appIcon:focus-visible {
+  outline: 2px dashed var(--glow);
+  outline-offset: 2px;
+}
+
+.appIcon:focus-visible .tip {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+/* ── Lamp on the top shelf: the day/night switch ────── */
+
+.lamp .objectArt {
+  position: relative;
+}
+
+/*
+  The lamp's label stays up. It's pinned to the lamp's right edge, so at the end of the
+  shelf it runs left, into the room, never off the screen.
+*/
+/* (Repeated with :hover and :focus-visible, so the other tips' hover rules don't move it.) */
+.lamp .lampTip,
+.lamp:hover .lampTip,
+.lamp:focus-visible .lampTip {
+  left: auto;
+  right: 0;
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* The lamp's light: a warm cone from under the shade down onto the shelf. */
+.lampLight {
+  position: absolute;
+  /* Centred under the shade (35% across the lamp, its rim 35% down). */
+  left: -64%;
+  top: 35%;
+  width: 220%;
+  height: 120%;
+  background: radial-gradient(ellipse 50% 70% at 45% 0%, rgba(255, 214, 140, 0.4), rgba(255, 190, 110, 0.12) 55%, transparent 75%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
 /* ── "About Me" callout over the portrait ───────────── */
 
 /* A small warm bubble above the portrait, bobbing gently. */
@@ -376,6 +398,12 @@
   white-space: nowrap;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35);
   animation: bob 2.4s ease-in-out infinite;
+}
+
+/* The portrait reaches the ceiling, so its bubble sits inside the frame's top, over the picture. */
+.frameHit .aboutBubble {
+  bottom: auto;
+  top: calc(5 * var(--s));
 }
 
 .aboutBubble::after {

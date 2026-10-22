@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { SKILL_LABELS, SOCIALS } from '../../data/room.js'
-import { SOCIAL_ICONS, SOCIAL_SIZE } from '../../room-art/sprites.js'
+import { SOCIALS } from '../../data/room.js'
+import { APP_ICONS, LAMP_SIZE, SOCIAL_ICONS, SOCIAL_SIZE, drawLamp } from '../../room-art/sprites.js'
 import { spriteUrl } from '../../room-art/to-image.js'
 import { works } from '../../data/works.js'
 import { layout, roomSize } from '../../room-art/layout.js'
@@ -75,17 +75,17 @@ function useViewport() {
   The pixel-art studio, the portfolio's home screen. It's drawn in code (src/room-art) for
   the exact screen size: the layout reflows rather than scales, so a wide screen gets a
   wider window and more books per shelf, a tall one more shelves. Phones get a compact room:
-  an upright monitor and a single column of books, as tall as the books need, scrolling.
+  the works as a row of spines on a library shelf above a full-width monitor.
 */
-export default function Room({ room, onOpen, monitorRef }) {
+export default function Room({ room, onOpen, monitorRef, appearance }) {
   const { vw, vh, phone } = useViewport()
-  const size = roomSize(vw, vh, { phone, books: works.length })
-  // Only a phone too short for readable books gets a room taller than the screen.
+  const size = roomSize(vw, vh, { phone })
+  // Only a very short phone gets a room taller than the screen.
   const scrolls = phone && size.H * size.scale > vh + 1
   return (
     <main className={`${styles.room} ${scrolls ? styles.scrolls : ''}`}>
       <h1 className="visually-hidden">Mide Adeshina — Portfolio</h1>
-      <Scene size={size} room={room} onOpen={onOpen} monitorRef={monitorRef} className={phone ? styles.tall : ''} />
+      <Scene size={size} room={room} onOpen={onOpen} monitorRef={monitorRef} appearance={appearance} className={phone ? styles.tall : ''} />
     </main>
   )
 }
@@ -113,7 +113,7 @@ function usePreview() {
 }
 
 // The canvas, and everything clickable placed over it from the same layout.
-function Scene({ size, room, onOpen, monitorRef, className = '' }) {
+function Scene({ size, room, onOpen, monitorRef, appearance, className = '' }) {
   const { W, H, scale } = size
   const L = useMemo(() => layout(W, H, works.length), [W, H])
   const overlayRef = useRef(null)
@@ -125,7 +125,7 @@ function Scene({ size, room, onOpen, monitorRef, className = '' }) {
     // Explicit pixel size (not aspect-ratio), so the canvas and the layer of buttons over it are
     // always exactly the same box on every browser.
     <div className={`${styles.scene} ${className}`} style={{ '--s': `${scale}px`, width: W * scale, height: H * scale }}>
-      <RoomCanvas L={L} />
+      <RoomCanvas L={L} day={appearance.day} />
       {/* Layers, back to front: the screen's contents, Mide (in front of the screen), the
           chair (hiding Mide's body), then everything clickable. */}
       <div className={styles.overlay}>
@@ -134,14 +134,15 @@ function Scene({ size, room, onOpen, monitorRef, className = '' }) {
       <div className={styles.overlay}>
         <Person L={L} onOpen={onOpen} />
       </div>
-      <ChairCanvas L={L} />
+      <ChairCanvas L={L} day={appearance.day} />
       <div ref={overlayRef} className={styles.overlay}>
-        <div className={`${styles.shelfSign} ${L.compact ? styles.signCompact : ''}`} style={place(L.sign, L)} aria-hidden="true">
+        <div className={styles.shelfSign} style={place(L.sign, L)} aria-hidden="true">
           <FolderIcon />
           <span>My Works</span>
-          {!L.compact && <span className={styles.signArrow}>→</span>}
+          <span className={styles.signArrow}>{L.library ? '↓' : '→'}</span>
         </div>
         <VisitCounter visits={room.visits} here={room.here} L={L} />
+        <Lamp L={L} appearance={appearance} />
         <Shelf works={works} L={L} onOpen={onOpen} onPreview={setPreview} />
         {L.portrait && (
           // The portrait is painted in the canvas; this is its click area and "About Me" callout.
@@ -149,7 +150,7 @@ function Scene({ size, room, onOpen, monitorRef, className = '' }) {
             <span className={styles.aboutBubble} aria-hidden="true">About Me</span>
           </Opener>
         )}
-        {scale >= 2 && <SkillWords L={L} />}
+        <AppNames L={L} />
         <Socials L={L} onOpen={onOpen} />
         <MusicPlayer L={L} />
         <Props L={L} overlayRef={overlayRef} room={room} onOpen={onOpen} />
@@ -178,20 +179,36 @@ function Socials({ L, onOpen }) {
   })
 }
 
-// Labels on the skill boxes on the top shelf (only when the room is big enough to read them).
-function SkillWords({ L }) {
-  return L.skillStacks.map((stack) =>
-    SKILL_LABELS[stack.id].slice(0, stack.rows).map((label, i) => (
-      <span
-        key={label}
-        className={styles.skillWord}
-        style={place({ left: stack.x + 2, top: L.shelf.y - (stack.rows - i) * stack.rowH, width: stack.w - 6, height: stack.rowH - 1 }, L)}
-        aria-hidden="true"
-      >
-        {label}
-      </span>
-    )),
+/*
+  The day/night switch: the lamp at the end of the top shelf. On is night (with a pool of
+  warm light under it), off is day. Its label always shows, so visitors know it's a switch.
+*/
+function Lamp({ L, appearance }) {
+  const on = !appearance.day
+  const label = on ? 'Switch off for day' : 'Switch on for night'
+  return (
+    <button
+      type="button"
+      className={`${styles.standing} ${styles.opener} ${styles.lamp}`}
+      style={{ left: pctX(L.lamp.x, L), top: pctY(L.lamp.y, L), width: pctX(LAMP_SIZE.w, L) }}
+      aria-label={label}
+      aria-pressed={on}
+      onClick={appearance.toggle}
+    >
+      {on && <span className={styles.lampLight} aria-hidden="true" />}
+      <img className={styles.objectArt} src={spriteUrl(`lamp-${on ? 'on' : 'off'}`, LAMP_SIZE.w, LAMP_SIZE.h, (r) => drawLamp(r, on))} width={LAMP_SIZE.w} height={LAMP_SIZE.h} alt="" draggable="false" />
+      <span className={`${styles.tip} ${styles.lampTip}`}>{label}</span>
+    </button>
   )
+}
+
+// The app icons are painted in the room; these name each one when it's hovered (or focused).
+function AppNames({ L }) {
+  return L.appIcons.map(({ index, x, y, size }) => (
+    <span key={index} className={styles.appIcon} style={place({ left: x, top: y, width: size, height: size }, L)} tabIndex={0} role="img" aria-label={APP_ICONS[index].name}>
+      <span className={styles.tip}>{APP_ICONS[index].name}</span>
+    </span>
+  ))
 }
 
 function FolderIcon() {
@@ -212,6 +229,7 @@ function DebugOverlay({ L }) {
     { ...L.sign, label: 'sign' },
     { ...L.counter, label: 'counter' },
     ...(L.portrait ? [{ left: L.portrait.x, top: L.portrait.y, width: L.portrait.w, height: L.portrait.h, label: 'portrait' }] : []),
+    ...(L.freeSpot ? [{ left: L.freeSpot.x, top: L.freeSpot.y, width: L.freeSpot.w, height: L.freeSpot.h, label: 'free spot' }] : []),
   ]
   return (
     <div className={styles.debug} aria-hidden="true">

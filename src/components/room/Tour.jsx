@@ -50,10 +50,11 @@ const STEPS = [
   },
   {
     id: 'opens',
-    text: 'Click my portrait to meet me. The notebooks and the phone open more.',
+    text: (L) => `Click ${L.portrait ? 'my portrait' : 'me at the desk'} to meet me. The notebooks and the phone open more.`,
     side: 'bottom',
+    // The portrait, or on phones (no portrait) Mide's head and shoulders above the chair.
     target: (L) => {
-      const p = L.portrait ?? { x: L.monitor.x, y: L.monitor.y, w: L.monitor.w, h: L.monitor.h }
+      const p = L.portrait ?? { x: L.person.x - 28, y: L.person.y - 62, w: 56, h: 40 }
       return { left: p.x, top: p.y, width: p.w, height: p.h }
     },
   },
@@ -194,7 +195,7 @@ function Callout({ L, scale, step, rect, onEscape, children }) {
         onKeyDown={(event) => event.key === 'Escape' && onEscape()}
       >
         <p className={styles.text} aria-live="polite">
-          {step.text}
+          {typeof step.text === 'function' ? step.text(L) : step.text}
         </p>
         <div className={styles.actions}>{children}</div>
       </div>

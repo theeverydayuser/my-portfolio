@@ -131,7 +131,7 @@ export default function App() {
         onMinimize={() => frontId && minimizeWindow(frontId)}
         onTidy={room.tidy}
       />
-      <Room room={room} onOpen={openWindow} monitorRef={monitorRef} />
+      <Room room={room} onOpen={openWindow} monitorRef={monitorRef} appearance={appearance} />
       {open.map((w, index) => {
         const content = windows[w.id]
         return (

@@ -49,6 +49,44 @@
   position: absolute;
 }
 
+/*
+  A spine in the phone's library: the title runs down it, as on a real book. The type is
+  as big as the spine's width allows, but small enough for the whole title to fit its length
+  (gilt bands take 7 room px at each end; the pixel font's letters are ~0.56em wide).
+*/
+.spine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+  background: center / 100% 100% no-repeat;
+  image-rendering: pixelated;
+  color: #f3eee6;
+  font-family: 'Pixelify Sans', var(--font-text);
+  font-weight: 600;
+  font-size: max(9px, min(calc(var(--spine-w) * 0.44 * var(--s, 1px)), calc((var(--spine-h) - 14) * var(--s, 1px) / (var(--title-chars, 6) * 0.56))));
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+  transition: translate 160ms ease, filter 160ms ease;
+}
+
+.spineTitle {
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+}
+
+/* A tapped spine dips, like a book being pulled from the shelf. */
+.spine:active {
+  translate: 0 calc(-2 * var(--s, 1px));
+  filter: brightness(1.15);
+}
+
+.spine:focus-visible {
+  outline: 2px dashed #ffd27a;
+  outline-offset: 2px;
+}
+
 /* A book being looked at slides up off the shelf. */
 @media (hover: hover) and (pointer: fine) {
   .book:hover {
@@ -68,7 +106,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .book {
+  .book,
+  .spine {
     transition: none;
   }
 }

@@ -124,6 +124,20 @@ export function drawBookCover(r, w, h, base) {
 }
 
 /*
+  A book seen spine-on, standing on the phone's library shelf: rounded lit edge on the left,
+  shaded right, and gilt bands near the top and the foot (the title is written over it).
+*/
+export function drawBookSpine(r, w, h, base) {
+  r.rect(0, 0, w, h, base)
+  r.vline(0, 0, h, shade(base, -0.5))
+  r.vline(1, 0, h, shade(base, 0.25))
+  r.vline(w - 1, 0, h, shade(base, -0.4))
+  r.hline(1, 0, w - 2, shade(base, 0.2))
+  const gilt = '#d8c890'
+  for (const y of [3, 5, h - 6, h - 4]) r.hline(2, y, w - 4, gilt)
+}
+
+/*
   The movable objects, drawn at about twice the detail of the little maps above, to match
   the reference's proportions (the mug is ~18 room px wide next to a 150 px monitor).
   Each is { w, h, draw(r) } drawing at (0, 0); lamp light comes from the right.
@@ -345,11 +359,12 @@ export const propSprite = (id) => PROPS_ART[id]
 */
 export const SOCIAL_SIZE = { w: 15, h: 15 }
 
-function drawTile(r, fill, edge) {
-  r.rect(1, 0, 13, 15, fill)
-  r.rect(0, 1, 15, 13, fill)
-  r.hline(1, 14, 13, edge)
-  r.vline(14, 1, 13, edge)
+// A rounded 15 × 15 tile with a shaded bottom and right edge, its top-left corner at x, y.
+function drawTile(r, fill, edge, x = 0, y = 0) {
+  r.rect(x + 1, y, 13, 15, fill)
+  r.rect(x, y + 1, 15, 13, fill)
+  r.hline(x + 1, y + 14, 13, edge)
+  r.vline(x + 14, y + 1, 13, edge)
 }
 
 export const SOCIAL_ICONS = {
@@ -534,4 +549,180 @@ export function drawHead(r, turn, tilt) {
     for (let x = rightEdge - 5; x <= rightEdge - 1; x++) px(x, 21 + f, '#140c06')
     for (let x = rightEdge - 4; x <= rightEdge - 2; x++) px(x, 22 + f, '#140c06')
   }
+}
+
+/*
+  The software I use, as app icons the size of the social tiles, most used first (a narrow
+  room shows only the first few). Each glyph is an 11 × 11 map ('.' is the tile showing through).
+*/
+const LETTERS = {
+  A: ['.ww.', 'w..w', 'w..w', 'wwww', 'w..w', 'w..w'],
+  P: ['www.', 'w..w', 'w..w', 'www.', 'w...', 'w...'],
+  e: ['.ww.', 'wwww', 'w...', '.www'],
+  s: ['.www', 'ww..', '..ww', 'www.'],
+  i: ['w', '.', 'w', 'w', 'w', 'w'],
+}
+
+// An Adobe-style two-letter mark ("Ps"): the capital, then the small letter sitting on the same line.
+function letterGlyph(cap, small) {
+  const grid = Array.from({ length: 11 }, () => Array(11).fill('.'))
+  const stamp = (rows, x, y) => rows.forEach((row, j) => [...row].forEach((ch, i) => ch !== '.' && (grid[y + j][x + i] = ch)))
+  stamp(LETTERS[cap], 1, 2)
+  stamp(LETTERS[small], LETTERS[small][0].length === 1 ? 7 : 6, 8 - LETTERS[small].length)
+  return grid.map((row) => row.join(''))
+}
+
+const appIcon = (name, fill, edge, shine, key, glyph) => ({ name, fill, edge, shine, key, glyph })
+
+export const APP_ICONS = [
+  appIcon('Figma', '#2c2c2c', '#161616', '#444444', { r: '#f24e1e', o: '#ff7262', p: '#a259ff', b: '#1abcfe', g: '#0acf83' }, [
+    '...........',
+    '....rroo...',
+    '...rrrooo..',
+    '....rroo...',
+    '....ppbb...',
+    '...pppbbb..',
+    '....ppbb...',
+    '....gg.....',
+    '...ggg.....',
+    '....gg.....',
+    '...........',
+  ]),
+  appIcon('Claude', '#d97757', '#a8533a', '#e8987c', { w: '#fbf0e6' }, [
+    '...........',
+    '.....w.....',
+    '..w..w..w..',
+    '...w.w.w...',
+    '....www....',
+    '.wwwwwwwww.',
+    '....www....',
+    '...w.w.w...',
+    '..w..w..w..',
+    '.....w.....',
+    '...........',
+  ]),
+  appIcon('Codex', '#16161a', '#060608', '#2e2e36', { w: '#f4f4f6' }, [
+    '...........',
+    '...........',
+    '...........',
+    '.ww........',
+    '..ww.......',
+    '...ww......',
+    '..ww.......',
+    '.ww...wwww.',
+    '...........',
+    '...........',
+    '...........',
+  ]),
+  appIcon('ChatGPT', '#10a37f', '#0a6e56', '#3cbf9c', { w: '#ffffff' }, [
+    '...........',
+    '....www....',
+    '..www.www..',
+    '..w.....w..',
+    '.ww.www.ww.',
+    '.w..w.w..w.',
+    '.ww.www.ww.',
+    '..w.....w..',
+    '..www.www..',
+    '....www....',
+    '...........',
+  ]),
+  appIcon('Gemini', '#1b1c24', '#0b0c12', '#33354a', { b: '#4f8df7', p: '#9b72f2', k: '#d96570' }, [
+    '.....b.....',
+    '.....b.....',
+    '....bbb....',
+    '....bbb....',
+    '..bbbbbpp..',
+    'bbbbbbppppk',
+    '..ppppppk..',
+    '....ppk....',
+    '....ppk....',
+    '.....k.....',
+    '.....k.....',
+  ]),
+  appIcon('Cursor', '#14120f', '#050403', '#2c2924', { l: '#ececec', m: '#9a9a9a', g: '#5a5a5a' }, [
+    '...........',
+    '.....l.....',
+    '...lllll...',
+    '.lllllllll.',
+    '.mmlllllgg.',
+    '.mmmmlgggg.',
+    '.mmmmmgggg.',
+    '.mmmmmgggg.',
+    '..mmmmggg..',
+    '....mmg....',
+    '...........',
+  ]),
+  appIcon('VS Code', '#1f6fb8', '#124a80', '#4a94d8', { w: '#ffffff', l: '#9fd4f8' }, [
+    '...........',
+    '.......www.',
+    '......wwww.',
+    '.l...ww.ww.',
+    '.ll.ww..ww.',
+    '..lww...ww.',
+    '.ll.ww..ww.',
+    '.l...ww.ww.',
+    '......wwww.',
+    '.......www.',
+    '...........',
+  ]),
+  appIcon('GitHub', '#24292f', '#111418', '#3a4048', { w: '#f0f3f6' }, [
+    '...........',
+    '..w.....w..',
+    '..ww...ww..',
+    '..wwwwwww..',
+    '.wwwwwwwww.',
+    '.wwwwwwwww.',
+    '.wwwwwwwww.',
+    '..wwwwwww..',
+    '.w.wwwww...',
+    '..ww.w.w...',
+    '...........',
+  ]),
+  appIcon('After Effects', '#00005b', '#000033', '#1a1a80', { w: '#9999ff' }, letterGlyph('A', 'e')),
+  appIcon('Photoshop', '#001e36', '#000f1c', '#0a3456', { w: '#31a8ff' }, letterGlyph('P', 's')),
+  appIcon('Illustrator', '#330000', '#1c0000', '#4d1010', { w: '#ff9a00' }, letterGlyph('A', 'i')),
+]
+
+// One app icon with its top-left corner at x, y.
+export function drawAppIcon(r, icon, x, y) {
+  drawTile(r, icon.fill, icon.edge, x, y)
+  r.hline(x + 2, y + 1, 11, icon.shine)
+  r.sprite(icon.glyph, icon.key, x + 2, y + 2)
+}
+
+/*
+  The lamp at the end of the top shelf, 20 × 26: the room's day/night switch. A red
+  architect's lamp on a heavy base; when it's on (night) the bulb glows under
+  the shade, when it's off (day) the bulb is dark.
+*/
+export const LAMP_SIZE = { w: 20, h: 26 }
+export function drawLamp(r, on) {
+  const metal = '#2a2a3c'
+  const metalLit = '#4a4a66'
+  // A two-pixel-thick arm from one joint to the next.
+  const arm = (x0, y0, x1, y1) => {
+    const steps = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0))
+    for (let k = 0; k <= steps; k++) {
+      const x = Math.round(x0 + ((x1 - x0) * k) / steps)
+      const y = Math.round(y0 + ((y1 - y0) * k) / steps)
+      r.px(x, y, metal)
+      r.px(x + 1, y, metalLit)
+    }
+  }
+  // Base, then the arm up to the elbow and over to the shade.
+  r.rect(9, 23, 10, 3, metal)
+  r.hline(10, 23, 8, metalLit)
+  arm(13, 22, 16, 12)
+  arm(16, 12, 9, 5)
+  r.rect(15, 11, 3, 3, '#1c1c2a')
+  // The shade: a dome opening downwards, lit along its top.
+  const shade = '#a8322a'
+  for (const [y, x1, x2] of [[3, 5, 9], [4, 4, 10], [5, 3, 11], [6, 2, 12]]) r.hline(x1, y, x2 - x1 + 1, shade)
+  r.hline(5, 3, 4, '#d85a48')
+  r.hline(4, 4, 3, '#d85a48')
+  r.hline(2, 7, 11, '#6a1c18')
+  // The bulb under the shade.
+  r.hline(5, 8, 5, on ? '#fff2b0' : '#5a5560')
+  if (on) r.hline(6, 9, 3, '#ffd27a')
 }

@@ -86,7 +86,14 @@ export default function Person({ L, onOpen }) {
         draggable="false"
         style={{ left: `${((head.x - body.x) / PERSON_BODY.w) * 100}%`, top: 0, width: `${(HEAD.w / PERSON_BODY.w) * 100}%` }}
       />
-      <span className={styles.tip}>That's me · About Me</span>
+      {/* Phones have no portrait, so the "About Me" callout stays up over Mide instead. */}
+      {L.portrait ? (
+        <span className={styles.tip}>That's me · About Me</span>
+      ) : (
+        <span className={styles.aboutBubble} aria-hidden="true">
+          About Me
+        </span>
+      )}
     </button>
   )
 }
