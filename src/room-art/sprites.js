@@ -726,3 +726,19 @@ export function drawLamp(r, on) {
   r.hline(5, 8, 5, on ? '#fff2b0' : '#5a5560')
   if (on) r.hline(6, 9, 3, '#ffd27a')
 }
+
+/*
+  A desk name plaque, w × 16 (layout.js picks the width): a dark plate in a gilt edge on a
+  wooden foot. The page writes the words on it ("My Resume"), so they stay sharp.
+*/
+export const PLAQUE_H = 16
+export function drawPlaque(r, w) {
+  r.rect(1, 0, w - 2, 12, '#b8862e')
+  r.hline(1, 0, w - 2, '#f2c46a')
+  r.vline(w - 2, 1, 11, '#7a5420')
+  r.rect(2, 1, w - 5, 10, '#16141e')
+  r.hline(2, 1, w - 5, '#2a2636')
+  r.rect(0, 12, w, 4, '#7a4028')
+  r.hline(0, 12, w, '#a65a33')
+  r.hline(0, 15, w, '#4b2622')
+}

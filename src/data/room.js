@@ -10,7 +10,7 @@ export const OPENS = {
   notes: { label: 'Notes', window: 'notes' },
   linkedin: { label: 'LinkedIn', href: LINKEDIN },
   tiktok: { label: 'TikTok' },
-  resume: { label: 'Resume' },
+  resume: { label: 'Resume', href: '/assets/resume/Adeshina-Mide-Otutuloro-CV.pdf' },
 }
 
 // The social tiles on the top shelf: fixed in place (not movable), each opens its profile.
@@ -20,7 +20,8 @@ export const SOCIALS = ['linkedin', 'tiktok']
   Objects visitors can pick up and leave anywhere; the mess is saved for the next visitor.
   `home(L)` is where each starts, from the room's layout: a surface and an x on it.
   Phones (L.compact) have a narrow desk, so some things start elsewhere there.
-  A click (without dragging) on one with `opens` opens it.
+  A click (without dragging) on one with `opens` opens it; `callout: true` keeps its label up
+  as a bubble (like About Me) instead of only on hover.
 */
 const right = (L) => L.monitor.x + L.monitor.w
 const middle = (L) => L.monitor.x + (L.monitor.w >> 1)
@@ -33,7 +34,7 @@ export const PROPS = [
   { id: 'pencil-cup', name: 'Pencil cup', home: (L) => ({ surface: 'desk-back', x: L.compact ? right(L) - 30 : L.monitor.x - 26 }) },
   { id: 'mug', name: 'Mug', home: (L) => ({ surface: 'desk-back', x: L.compact ? right(L) - 16 : L.monitor.x - 11 }) },
   { id: 'phone-stand', name: 'Phone', opens: 'linkedin', home: (L) => ({ surface: 'desk-back', x: L.compact ? right(L) - 1 : L.caseX - 4 }) },
-  { id: 'notebooks', name: 'Notebooks', opens: 'notes', home: (L) => ({ surface: 'desk-front', x: L.windowW + (L.compact ? 14 : 22) }) },
+  { id: 'notebooks', name: 'Notebooks', opens: 'notes', callout: true, home: (L) => ({ surface: 'desk-front', x: L.windowW + (L.compact ? 14 : 22) }) },
   { id: 'note-yellow', name: 'Résumé note', opens: 'resume', home: (L) => ({ surface: 'desk-front', x: L.compact ? L.windowW + 42 : L.caseX + 20 }) },
   { id: 'headset', name: 'Headphones', home: (L) => ({ surface: 'desk-front', x: L.compact ? L.W - 12 : middle(L) - 52 }) },
   { id: 'camera', name: 'Camera', home: (L) => (L.compact ? { surface: 'desk-back', x: right(L) - 46 } : { surface: 'desk-front', x: L.windowW + 72 }) },

@@ -32,6 +32,8 @@ const UNDER_DESK = { compact: 60, wide: 84 }
 // The phone's library shelf: the sign row above it, then spines up to bookH tall, each
 // a little shorter or taller (drop, in room px) so the row looks like real books.
 const LIBRARY = { signH: 11, bookH: 58, spineW: { min: 12, max: 18 }, drop: [0, 4, 1, 6, 2, 0, 5, 3, 1] }
+// The "My Resume" plaque's width, in room pixels, where there's room for it.
+const PLAQUE_W = 52
 // The shortest phone room that still gets a usable monitor; shorter screens scroll.
 const PHONE_MIN_H = 340
 const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi)
@@ -91,7 +93,8 @@ export function layout(W, H, books = 9) {
 
   // Social tiles and the shelf's other things start at these fractions along the top shelf.
   // The lamp (the day/night switch) stands at the right end, just within reach of a thumb.
-  const spots = compact ? { figure: 0.12, linkedin: 0.32, tiktok: 0.5, globe: 0.72 } : { figure: 0.03, linkedin: 0.64, tiktok: 0.735, globe: 0.835 }
+  // Phones also have the "My Resume" plaque, between the figure and LinkedIn.
+  const spots = compact ? { figure: 0.05, plaque: 0.226, linkedin: 0.414, tiktok: 0.55, globe: 0.705 } : { figure: 0.03, linkedin: 0.64, tiktok: 0.735, globe: 0.835 }
   const onShelf = (f) => Math.round(shelf.x1 + shelfW * f)
 
   // The software I use, as app icons from the start of the shelf to the label boxes.
@@ -113,6 +116,11 @@ export function layout(W, H, books = 9) {
   const lamp = { x: shelf.x2 - 11, y: topShelfY }
 
   const socialSlots = [spots.linkedin, spots.tiktok].map((f) => ({ x: onShelf(f), y: topShelfY }))
+  // The "My Resume" plaque: on the phone's top shelf, or at the front of the desk past the
+  // bookcase (as wide as that stretch allows, up to PLAQUE_W).
+  const plaque = compact
+    ? { x: onShelf(spots.plaque), y: topShelfY, w: PLAQUE_W }
+    : { x: Math.round((caseX + 28 + W) / 2), y: deskY + 22, w: Math.min(PLAQUE_W, W - caseX - 32) }
 
   // Tall rooms get a second shelf higher up, halfway between the beam and the top shelf.
   const highShelfY = topShelfY - beamH > (compact ? 80 : 110) ? Math.round(beamH + (topShelfY - beamH) * 0.5) : null
@@ -157,6 +165,7 @@ export function layout(W, H, books = 9) {
     freeSpot,
     appIcons,
     socialSlots,
+    plaque,
     player,
     person,
     highShelf,

@@ -152,7 +152,7 @@ function Prop({ prop, L, overlayRef, place, remote, onDrag, onDrop, onOpen }) {
       onKeyDown={onKeyDown}
     >
       <img className={roomStyles.objectArt} src={spriteUrl(prop.id, art.w, art.h, art.draw)} width={art.w} height={art.h} alt="" draggable="false" />
-      {prop.opens && !held && !remote && <span className={roomStyles.tip}>{openerLabel(prop.opens)}</span>}
+      {prop.opens && !held && !remote && <span className={prop.callout ? roomStyles.aboutBubble : roomStyles.tip}>{openerLabel(prop.opens)}</span>}
     </button>
   )
 }

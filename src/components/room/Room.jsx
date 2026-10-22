@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { SOCIALS } from '../../data/room.js'
-import { APP_ICONS, LAMP_SIZE, SOCIAL_ICONS, SOCIAL_SIZE, drawLamp } from '../../room-art/sprites.js'
+import { APP_ICONS, LAMP_SIZE, PLAQUE_H, SOCIAL_ICONS, SOCIAL_SIZE, drawLamp, drawPlaque } from '../../room-art/sprites.js'
 import { spriteUrl } from '../../room-art/to-image.js'
 import { works } from '../../data/works.js'
 import { layout, roomSize } from '../../room-art/layout.js'
@@ -152,6 +152,7 @@ function Scene({ size, room, onOpen, monitorRef, appearance, className = '' }) {
         )}
         <AppNames L={L} />
         <Socials L={L} onOpen={onOpen} />
+        <Plaque L={L} onOpen={onOpen} />
         <MusicPlayer L={L} />
         <Props L={L} overlayRef={overlayRef} room={room} onOpen={onOpen} />
         <Tour L={L} room={room} scale={scale} />
@@ -199,6 +200,18 @@ function Lamp({ L, appearance }) {
       <img className={styles.objectArt} src={spriteUrl(`lamp-${on ? 'on' : 'off'}`, LAMP_SIZE.w, LAMP_SIZE.h, (r) => drawLamp(r, on))} width={LAMP_SIZE.w} height={LAMP_SIZE.h} alt="" draggable="false" />
       <span className={`${styles.tip} ${styles.lampTip}`}>{label}</span>
     </button>
+  )
+}
+
+// The "My Resume" name plaque (phone: top shelf; larger screens: front of the desk); it opens the résumé.
+function Plaque({ L, onOpen }) {
+  return (
+    <Opener opens="resume" onOpen={onOpen} className={styles.standing} style={{ left: pctX(L.plaque.x, L), top: pctY(L.plaque.y, L), width: pctX(L.plaque.w, L), '--plaque-w': L.plaque.w }}>
+      <img className={styles.objectArt} src={spriteUrl(`plaque-${L.plaque.w}`, L.plaque.w, PLAQUE_H, (r) => drawPlaque(r, L.plaque.w))} width={L.plaque.w} height={PLAQUE_H} alt="" draggable="false" />
+      <span className={styles.plaqueText} aria-hidden="true">
+        My Resume
+      </span>
+    </Opener>
   )
 }
 

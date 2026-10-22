@@ -331,6 +331,24 @@
   filter: brightness(0.75);
 }
 
+/* ── "My Resume" plaque ───────────────────────────────────── */
+
+/* The words sit on the plate: its top 12 of 16 pixels, inside the gilt edge. */
+.plaqueText {
+  position: absolute;
+  inset: 0 0 25% 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffd27a;
+  font-family: var(--pixel-font);
+  /* As big as 7 room px, but small enough for "My Resume" (9 letters ~0.56em wide) to fit the plate. */
+  font-size: max(12px, min(calc(7 * var(--s)), calc((var(--plaque-w) - 8) * var(--s) / 5)));
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
 /* ── App icons on the top shelf (painted in; these carry their names) ── */
 
 .appIcon {
