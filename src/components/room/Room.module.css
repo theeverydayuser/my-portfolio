@@ -331,6 +331,89 @@
   filter: brightness(0.75);
 }
 
+/* ── "Office in progress" plate, hanging from a nail ── */
+
+/* Drops onto the nail when the room appears, with a little bounce on the rope. */
+.plate {
+  position: absolute;
+  z-index: 3;
+  display: block;
+  animation: plateDrop 900ms cubic-bezier(0.3, 1.5, 0.5, 1) both;
+}
+
+/* Then sways from the nail (its top centre). */
+.plateSway {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-origin: 50% 0;
+  animation: plateSway 4.5s ease-in-out 900ms infinite;
+}
+
+/* The words on the board: below the rope, inside the board's edges. */
+.plateText {
+  position: absolute;
+  inset: calc(var(--rope) * 100% + 2 * var(--s)) calc(2 * var(--s)) calc(2 * var(--s));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(0.6 * var(--s));
+  color: #fbf0e0;
+  font-family: var(--pixel-font);
+  /* As big as 5.5 room px, but small enough for the longest line (16 letters ~0.56em wide) to fit. */
+  font-size: max(9px, min(calc(5.5 * var(--s)), calc((var(--plate-w) - 6) * var(--s) / 9)));
+  line-height: 1.1;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.plateText strong {
+  margin-top: calc(0.8 * var(--s));
+  color: #ffd27a;
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .plate:hover .objectArt {
+    filter: brightness(1.12);
+  }
+}
+
+.plate:focus-visible {
+  outline: 2px dashed var(--glow);
+  outline-offset: 2px;
+}
+
+@keyframes plateDrop {
+  from {
+    translate: 0 -60%;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+
+@keyframes plateSway {
+  0%,
+  100% {
+    rotate: -2.5deg;
+  }
+  50% {
+    rotate: 2.5deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plate,
+  .plateSway {
+    animation: none;
+  }
+}
+
 /* ── "My Resume" plaque ───────────────────────────────────── */
 
 /* The words sit on the plate: its top 12 of 16 pixels, inside the gilt edge. */

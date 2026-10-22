@@ -34,6 +34,9 @@ async function portraitPixels(w, h) {
   return { w, h, data: ctx.getImageData(0, 0, w, h).data }
 }
 
+// ImageData can't be 0 (or NaN) pixels in either direction, so a room with no size isn't drawn.
+const hasSize = (L) => L.W > 0 && L.H > 0
+
 /*
   The room itself: drawn in code into a canvas at its native pixel size, then scaled up by
   CSS with crisp pixels. Redraws when the layout or day/night changes, and once more when
@@ -43,6 +46,7 @@ export default function RoomCanvas({ L, day }) {
   const ref = useRef(null)
 
   useEffect(() => {
+    if (!hasSize(L)) return
     const ctx = ref.current.getContext('2d')
     const raster = createRaster(L.W, L.H)
     const image = new ImageData(raster.data, L.W, L.H)
@@ -71,6 +75,7 @@ export default function RoomCanvas({ L, day }) {
 export function ChairCanvas({ L, day }) {
   const ref = useRef(null)
   useEffect(() => {
+    if (!hasSize(L)) return
     const raster = createRaster(L.W, L.H)
     drawChairLayer(raster, L, day ? DAY : NIGHT)
     ref.current.getContext('2d').putImageData(new ImageData(raster.data, L.W, L.H), 0, 0)

@@ -742,3 +742,36 @@ export function drawPlaque(r, w) {
   r.hline(0, 12, w, '#a65a33')
   r.hline(0, 15, w, '#4b2622')
 }
+
+/*
+  A wooden plate hanging on a rope from a nail, w × (PLATE.rope + PLATE.board): the nail at
+  the top centre, the rope running down to both top corners, then the board (the page writes
+  the words on it, so they stay sharp).
+*/
+export const PLATE = { rope: 10, board: 34 }
+export function drawPlate(r, w) {
+  const cx = w >> 1
+  const rope = '#c8a86a'
+  // The rope, from the nail down to each corner.
+  for (const end of [5, w - 6]) {
+    const steps = Math.max(Math.abs(end - cx), PLATE.rope - 2)
+    for (let k = 0; k <= steps; k++) r.px(Math.round(cx + ((end - cx) * k) / steps), Math.round(2 + ((PLATE.rope - 2) * k) / steps), rope)
+  }
+  // The nail.
+  r.rect(cx - 1, 0, 3, 2, '#6a6a78')
+  r.px(cx - 1, 0, '#b0b0bc')
+  // The board: lit top edge, shaded bottom and right, a couple of grain lines.
+  const y = PLATE.rope
+  const h = PLATE.board
+  r.rect(0, y, w, h, '#8a5a32')
+  r.hline(0, y, w, '#b07a46')
+  r.hline(0, y + h - 1, w, '#5e3a22')
+  r.vline(w - 1, y + 1, h - 1, '#5e3a22')
+  r.hline(3, y + 9, w - 10, '#7d5030')
+  r.hline(8, y + h - 8, w - 14, '#7d5030')
+  // Where the rope is knotted through the board.
+  for (const x of [5, w - 6]) {
+    r.px(x, y + 2, '#3a2416')
+    r.px(x, y + 1, rope)
+  }
+}

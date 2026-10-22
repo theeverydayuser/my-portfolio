@@ -116,6 +116,12 @@ export function layout(W, H, books = 9) {
   const lamp = { x: shelf.x2 - 11, y: topShelfY }
 
   const socialSlots = [spots.linkedin, spots.tiktok].map((f) => ({ x: onShelf(f), y: topShelfY }))
+  // The "office in progress" plate, hanging from a nail: in the free spot on larger screens; on
+  // phones under the tools shelf, over the monitor's top-right corner. x is the nail.
+  const plate = compact
+    ? { x: monitor.x + monitor.w - 42, y: toolShelf.y + 11, w: 72 }
+    : freeSpot && { x: freeSpot.x + (freeSpot.w >> 1), y: freeSpot.y + 6, w: Math.min(56, freeSpot.w - 4) }
+
   // The "My Resume" plaque: on the phone's top shelf, or at the front of the desk past the
   // bookcase (as wide as that stretch allows, up to PLAQUE_W).
   const plaque = compact
@@ -166,6 +172,7 @@ export function layout(W, H, books = 9) {
     appIcons,
     socialSlots,
     plaque,
+    plate,
     player,
     person,
     highShelf,
@@ -255,8 +262,10 @@ const MAX_UPRIGHT = 1.5
   Larger screens: pixels as big as possible while the room stays at least the reference
   height and MIN width, so a wide screen gets a wider room and an upright one a taller room.
   Phones: a fixed-width compact room that fits the screen's height.
+  A window with no size (a hidden or background tab, a link preview) gets null: no room.
 */
 export function roomSize(vw, vh, { phone = false } = {}) {
+  if (!(vw > 0 && vh > 0)) return null
   if (phone) {
     const scale = vw / PHONE_W
     // The room fits the screen; only a very short one (the monitor would be a sliver) scrolls.

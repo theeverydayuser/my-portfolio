@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { SOCIALS } from '../../data/room.js'
-import { APP_ICONS, LAMP_SIZE, PLAQUE_H, SOCIAL_ICONS, SOCIAL_SIZE, drawLamp, drawPlaque } from '../../room-art/sprites.js'
+import { OPENS, SOCIALS } from '../../data/room.js'
+import { APP_ICONS, LAMP_SIZE, PLAQUE_H, PLATE, SOCIAL_ICONS, SOCIAL_SIZE, drawLamp, drawPlaque, drawPlate } from '../../room-art/sprites.js'
 import { spriteUrl } from '../../room-art/to-image.js'
 import { works } from '../../data/works.js'
 import { layout, roomSize } from '../../room-art/layout.js'
@@ -56,8 +56,9 @@ function useViewport() {
       frame = requestAnimationFrame(() =>
         setSize((prev) => {
           const next = read()
-          // On a phone, only a width change (rotating it) re-lays out the room.
-          if (next.phone && prev.phone && next.vw === prev.vw) return prev
+          // On a phone, only a width change (rotating it) re-lays out the room, unless the
+          // last reading had no size (the tab was hidden).
+          if (next.phone && prev.phone && next.vw === prev.vw && prev.vh > 0) return prev
           return next
         }),
       )
@@ -81,11 +82,12 @@ export default function Room({ room, onOpen, monitorRef, appearance }) {
   const { vw, vh, phone } = useViewport()
   const size = roomSize(vw, vh, { phone })
   // Only a very short phone gets a room taller than the screen.
-  const scrolls = phone && size.H * size.scale > vh + 1
+  const scrolls = Boolean(size) && phone && size.H * size.scale > vh + 1
   return (
     <main className={`${styles.room} ${scrolls ? styles.scrolls : ''}`}>
       <h1 className="visually-hidden">Mide Adeshina — Portfolio</h1>
-      <Scene size={size} room={room} onOpen={onOpen} monitorRef={monitorRef} appearance={appearance} className={phone ? styles.tall : ''} />
+      {/* No room while the window has no size; it's drawn as soon as it gets one. */}
+      {size && <Scene size={size} room={room} onOpen={onOpen} monitorRef={monitorRef} appearance={appearance} className={phone ? styles.tall : ''} />}
     </main>
   )
 }
@@ -153,6 +155,7 @@ function Scene({ size, room, onOpen, monitorRef, appearance, className = '' }) {
         <AppNames L={L} />
         <Socials L={L} onOpen={onOpen} />
         <Plaque L={L} onOpen={onOpen} />
+        {L.plate && <InProgressPlate L={L} />}
         <MusicPlayer L={L} />
         <Props L={L} overlayRef={overlayRef} room={room} onOpen={onOpen} />
         <Tour L={L} room={room} scale={scale} />
@@ -212,6 +215,33 @@ function Plaque({ L, onOpen }) {
         My Resume
       </span>
     </Opener>
+  )
+}
+
+/*
+  A plate hanging on a rope from a nail: the office is still being built, and in the meantime
+  here's the CV (a click downloads it). It drops onto its nail when the room appears, then sways.
+*/
+function InProgressPlate({ L }) {
+  const { x, y, w } = L.plate
+  const h = PLATE.rope + PLATE.board
+  return (
+    <a
+      className={styles.plate}
+      href={OPENS.resume.href}
+      download="Adeshina-Mide-Otutuloro-CV.pdf"
+      style={{ ...place({ left: x - w / 2, top: y, width: w, height: h }, L), '--plate-w': w, '--rope': PLATE.rope / h }}
+      aria-label="This office is in progress. Download my CV"
+    >
+      <span className={styles.plateSway}>
+        <img className={styles.objectArt} src={spriteUrl(`plate-${w}`, w, h, (r) => drawPlate(r, w))} width={w} height={h} alt="" draggable="false" />
+        <span className={styles.plateText} aria-hidden="true">
+          <span>This office is</span>
+          <span>in progress</span>
+          <strong>Download my CV ↓</strong>
+        </span>
+      </span>
+    </a>
   )
 }
 
