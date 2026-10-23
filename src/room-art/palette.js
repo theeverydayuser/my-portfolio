@@ -45,6 +45,11 @@ export const NIGHT = {
   keyGlowB: '#a46cff',
   mouse: '#121433',
 
+  // The testimonial board's cork.
+  cork: '#5a3e2a',
+  corkDark: '#3e2a1c',
+  corkLight: '#70503a',
+
   // Furniture below the desk.
   chair: '#0b0e22',
   chairMesh: '#161a3c',
@@ -109,6 +114,11 @@ export const DAY = {
   keyGlowA: '#6a7cff',
   keyGlowB: '#a46cff',
   mouse: '#2a2c44',
+
+  // The testimonial board's cork.
+  cork: '#b98a5a',
+  corkDark: '#9a6e44',
+  corkLight: '#d0a272',
 
   // Furniture below the desk.
   chair: '#3a3f52',

@@ -31,16 +31,16 @@ export const PROPS = [
   { id: 'figure', name: 'Figure', home: (L) => ({ surface: 'shelf-top', x: L.shelfAt(L.spots.figure) }) },
   { id: 'globe', name: 'Globe', home: (L) => ({ surface: 'shelf-top', x: L.shelfAt(L.spots.globe) }) },
   // On the desk.
-  { id: 'pencil-cup', name: 'Pencil cup', home: (L) => ({ surface: 'desk-back', x: L.compact ? right(L) - 30 : L.monitor.x - 26 }) },
-  { id: 'mug', name: 'Mug', home: (L) => ({ surface: 'desk-back', x: L.compact ? right(L) - 16 : L.monitor.x - 11 }) },
+  { id: 'pencil-cup', name: 'Pencil cup', home: (L) => ({ surface: 'desk-back', x: L.compact ? right(L) - 30 : L.monitor.x + 10 }) },
+  { id: 'mug', name: 'Mug', home: (L) => ({ surface: 'desk-back', x: L.compact ? right(L) - 16 : L.monitor.x + 25 }) },
   { id: 'phone-stand', name: 'Phone', opens: 'linkedin', home: (L) => ({ surface: 'desk-back', x: L.compact ? right(L) - 1 : L.caseX - 4 }) },
-  { id: 'notebooks', name: 'Notebooks', opens: 'notes', callout: true, home: (L) => ({ surface: 'desk-front', x: L.windowW + (L.compact ? 14 : 22) }) },
-  { id: 'note-yellow', name: 'Résumé note', opens: 'resume', home: (L) => ({ surface: 'desk-front', x: L.compact ? L.windowW + 42 : L.caseX + 20 }) },
+  { id: 'notebooks', name: 'Notebooks', opens: 'notes', callout: true, home: (L) => ({ surface: 'desk-front', x: L.boardW + (L.compact ? 14 : 22) }) },
+  { id: 'note-yellow', name: 'Résumé note', opens: 'resume', home: (L) => ({ surface: 'desk-front', x: L.compact ? L.boardW + 42 : L.caseX + 20 }) },
   { id: 'headset', name: 'Headphones', home: (L) => ({ surface: 'desk-front', x: L.compact ? L.W - 12 : middle(L) - 52 }) },
-  { id: 'camera', name: 'Camera', home: (L) => (L.compact ? { surface: 'desk-back', x: right(L) - 46 } : { surface: 'desk-front', x: L.windowW + 72 }) },
+  { id: 'camera', name: 'Camera', home: (L) => (L.compact ? { surface: 'desk-back', x: right(L) - 46 } : { surface: 'desk-back', x: middle(L) - 30 }) },
   // The monitor spans the wall, so these sit on the front of the desk, right of the mouse
   // (on phones, on the floor right of the chair).
   { id: 'tower', name: 'Computer', home: (L) => (L.compact ? { surface: 'floor', x: L.W - 34 } : { surface: 'desk-front', x: middle(L) + 66 }) },
   { id: 'speaker', name: 'Speaker', home: (L) => (L.compact ? { surface: 'floor', x: L.W - 16 } : { surface: 'desk-front', x: middle(L) + 80 }) },
-  { id: 'note-blue', name: 'Sticky note', home: (L) => (L.compact ? { surface: 'floor', x: L.W - 8 } : { surface: 'desk-front', x: L.windowW + 52 }) },
+  { id: 'note-blue', name: 'Sticky note', home: (L) => (L.compact ? { surface: 'floor', x: L.W - 8 } : { surface: 'desk-front', x: L.boardW + 44 }) },
 ]

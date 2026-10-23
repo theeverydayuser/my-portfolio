@@ -6,6 +6,8 @@ import CaseStudy from './components/CaseStudy.jsx'
 import Placeholder from './components/Placeholder.jsx'
 import AboutMe from './components/AboutMe.jsx'
 import Notes from './components/Notes.jsx'
+import Cursor from './components/Cursor.jsx'
+import Testimonials from './components/Testimonials.jsx'
 import { works } from './data/works.js'
 import { useAppearance } from './appearance.js'
 import { useRoom } from './room-sync/use-room.js'
@@ -16,6 +18,7 @@ const windows = Object.fromEntries([
   ...works.map((w) => [w.id, { title: w.subtitle ? `${w.title} — ${w.subtitle}` : w.title, caseStudy: w.caseStudy }]),
   ['about-me', { title: 'About Me' }],
   ['notes', { title: 'Notes' }],
+  ['testimonials', { title: 'Kind words' }],
 ])
 
 // Windows with their own designed content.
@@ -27,6 +30,15 @@ Object.assign(windows['about-me'], {
   maxHeight: '57vh',
   position: { left: '15.4vw', top: '25.4vh' },
   showTitle: false,
+})
+
+// Kind words: the recommendations pinned on the board, opening beside it.
+Object.assign(windows.testimonials, {
+  Content: Testimonials,
+  width: 980,
+  minWidth: 640,
+  height: '78vh',
+  position: { left: '14vw', top: '8vh' },
 })
 
 // Notes: ~73% of the screen tall at a fixed height, opening right of centre like the reference.
@@ -165,6 +177,7 @@ export default function App() {
           </Window>
         )
       })}
+      <Cursor />
     </>
   )
 }

@@ -6,18 +6,19 @@
   column of books; a taller screen gets more bookcase bays. Everything hangs off three
   anchors: the window on the left, the bookcase on the right, the desk along the bottom.
 
-  On larger screens the left column (windowW wide, where a window once was) holds Mide's
-  portrait, full height from the beam to the desk.
+  On larger screens the left column (boardW wide) holds a cork board of testimonials, full
+  height from the beam to the desk, with notes pinned down it.
 
   Phones get a compact room (W ≤ COMPACT_W), stacked from the ceiling down: the top shelf,
   the works standing as a row of spines on a library shelf, then a full-width monitor. No
-  bookcase and no portrait; a shelf of app icons sits between the library and the monitor.
+  bookcase and no testimonial board; a shelf of app icons sits between the library and the monitor.
   The room fits the screen (a very short one scrolls).
 
   The renderer (draw-room.js) and the page's clickable layer both read this, so the art
   and the buttons on it can't drift apart.
 */
 import { APP_ICONS, SOCIAL_SIZE } from './sprites.js'
+import { testimonials } from '../data/testimonials.js'
 
 export const REFERENCE = { w: 384, h: 256 }
 export const MIN = { w: 300, h: 220 }
@@ -27,8 +28,9 @@ const PHONE_W = 210
 
 const BOOK = { w: 26, h: 31 }
 const BAY = 36
-// Below the desk on phones: just the top of the chair, so the room fits one screen.
-const UNDER_DESK = { compact: 60, wide: 84 }
+// Below the desk: just the top of the chair (and on larger screens the drawers' tops), so the
+// wall above gets the height.
+const UNDER_DESK = { compact: 60, wide: 56 }
 // The phone's library shelf: the sign row above it, then spines up to bookH tall, each
 // a little shorter or taller (drop, in room px) so the row looks like real books.
 const LIBRARY = { signH: 11, bookH: 58, spineW: { min: 12, max: 18 }, drop: [0, 4, 1, 6, 2, 0, 5, 3, 1] }
@@ -75,16 +77,15 @@ export function layout(W, H, books = 9) {
     })),
   )
 
-  // The portrait's column: grows with spare width, never too thin to see a face. Phones have none.
-  const windowW = compact ? 0 : Math.round(W >= REFERENCE.w ? clamp(40 + (W - REFERENCE.w) * 0.45, 40, 150) : clamp(40 - (REFERENCE.w - W) * 0.2, 30, 40))
+  // The testimonial board's column: grows with spare width, always wide enough for a
+  // landscape note. Phones have none.
+  const boardW = compact ? 0 : Math.round(W >= REFERENCE.w ? clamp(70 + (W - REFERENCE.w) * 0.45, 70, 170) : clamp(70 - (REFERENCE.w - W) * 0.12, 60, 70))
 
-  // The wall between the portrait and the bookcase.
-  const wall = { x1: windowW, x2: caseX }
-  const wallW = wall.x2 - wall.x1
+  // The wall between the board and the bookcase.
+  const wall = { x1: boardW, x2: caseX }
 
-  const { monitor, freeSpot = null, topShelfY, midShelf = null, library = null, toolShelf = null } = compact ? stackUpright(wall, deskY, beamH, books) : besideWide(wall, wallW, caseX, deskY)
-  // Mide's portrait fills the left column, standing on the desk.
-  const portrait = compact ? null : { x: 3, y: beamH + 3, w: windowW - 6, h: deskY - 1 - (beamH + 3) }
+  const { monitor, topShelfY, midShelf = null, library = null, toolShelf = null } = compact ? stackUpright(wall, deskY, beamH, books) : besideWide(wall, caseX, deskY, beamH)
+  const board = compact ? null : testimonialBoard({ x: 3, y: beamH + 3, w: boardW - 6, h: deskY - 1 - (beamH + 3) }, testimonials)
   // Where the works go: the library's spines on phones, the bookcase's bays elsewhere.
   const bookSlots = library ? library.spines : caseSlots
   const screen = { x: monitor.x + 3, y: monitor.y + 3, w: monitor.w - 6, h: monitor.h - 7 }
@@ -111,16 +112,19 @@ export function layout(W, H, books = 9) {
   const person = { x: monitor.x + (monitor.w >> 1) + 8, y: deskY + 30 }
 
   // The record player: at the foot of the bookcase, or on phones on the desk by the plant.
-  const player = { x: compact ? windowW + 54 : caseX + 24, y: deskY }
+  const player = { x: compact ? boardW + 54 : caseX + 24, y: deskY }
+  // Phones: the cord that pulls down the "Kind words" board, hanging from the beam at the left.
+  // (Long enough to hang past the top shelf, beside the My Works sign.)
+  const pullCord = compact ? { x: 5, y: beamH, length: 46 } : null
+
   // The lamp, the day/night switch, at the right end of the top shelf.
   const lamp = { x: shelf.x2 - 11, y: topShelfY }
 
   const socialSlots = [spots.linkedin, spots.tiktok].map((f) => ({ x: onShelf(f), y: topShelfY }))
-  // The "office in progress" plate, hanging from a nail: in the free spot on larger screens; on
-  // phones under the tools shelf, over the monitor's top-right corner. x is the nail.
-  const plate = compact
-    ? { x: monitor.x + monitor.w - 42, y: toolShelf.y + 11, w: 72 }
-    : freeSpot && { x: freeSpot.x + (freeSpot.w >> 1), y: freeSpot.y + 6, w: Math.min(56, freeSpot.w - 4) }
+  // The "office in progress" plate, hanging from a nail just under a shelf, over a top corner
+  // of the monitor: the top shelf and the left corner on larger screens; on phones the tools
+  // shelf and the right corner. x is the nail.
+  const plate = compact ? { x: monitor.x + monitor.w - 42, y: toolShelf.y + 11, w: 72 } : { x: monitor.x + 34, y: topShelfY + 11, w: 56 }
 
   // The "My Resume" plaque: on the phone's top shelf, or at the front of the desk past the
   // bookcase (as wide as that stretch allows, up to PLAQUE_W).
@@ -137,7 +141,7 @@ export function layout(W, H, books = 9) {
     { id: 'shelf-top', y: topShelfY, x1: shelf.x1, x2: shelf.x2 },
     ...(midShelf ? [{ id: 'shelf-mid', y: midShelf.y, x1: midShelf.x1, x2: midShelf.x2 }] : []),
     ...bays.map(({ id, floor, x1, x2 }) => ({ id, y: floor, x1, x2 })),
-    { id: 'desk-back', y: deskY, x1: windowW - 2, x2: W },
+    { id: 'desk-back', y: deskY, x1: boardW - 2, x2: W },
     { id: 'desk-front', y: deskY + 22, x1: 0, x2: W },
     { id: 'floor', y: H - 1, x1: 0, x2: W },
   ]
@@ -148,7 +152,7 @@ export function layout(W, H, books = 9) {
     compact,
     beamH,
     deskY,
-    windowW,
+    boardW,
     wall,
     shelf,
     shelfAt: onShelf,
@@ -167,8 +171,8 @@ export function layout(W, H, books = 9) {
     screen,
     lightBar,
     keyboardW,
-    portrait,
-    freeSpot,
+    board,
+    pullCord,
     appIcons,
     socialSlots,
     plaque,
@@ -201,17 +205,41 @@ function placeAppIcons(x1, x2, shelfY) {
 }
 
 /*
-  Laptops and desktops: a free spot on the wall's left, behind the plant (kept for something
-  new; it held a small portrait), and an ultrawide monitor (2:1 at most) taking the rest of
-  the wall under the shelf, leaving room for the light bar on top.
+  Laptops and desktops: the top shelf hangs a set way under the beam (lower on tall screens,
+  with a high shelf above it), and a wide monitor (5:3 at most) takes the wall under it,
+  leaving room for the light bar on top.
 */
-function besideWide(wall, wallW, caseX, deskY) {
-  const topShelfY = deskY - 127
-  const freeSpot = wallW >= 200 ? { x: wall.x1 + 8, y: topShelfY + 12, w: Math.min(64, Math.round(wallW * 0.32)), h: deskY - 1 - (topShelfY + 12) } : null
-  const x1 = freeSpot ? freeSpot.x + freeSpot.w + 10 : wall.x1 + 16
+function besideWide(wall, caseX, deskY, beamH) {
+  const topShelfY = Math.max(beamH + 33, deskY - 155)
+  const x1 = wall.x1 + 16
   const w = caseX - 12 - x1
-  const h = Math.min(Math.round(w * 0.5), deskY - 8 - (topShelfY + 22))
-  return { topShelfY, freeSpot, monitor: { x: x1, y: deskY - 8 - h, w, h } }
+  const h = Math.min(Math.round(w * 0.6), deskY - 8 - (topShelfY + 22))
+  return { topShelfY, monitor: { x: x1, y: deskY - 8 - h, w, h } }
+}
+
+// The testimonial board: a framed cork panel with a "Kind words" header, and small sticky
+// notes pinned in a grid, as many as fit (the window has them all).
+const BOARD = { frame: 3, header: 20, note: { w: 50, h: 34 }, gap: 6 }
+function testimonialBoard(box, items) {
+  const inner = { x: box.x + BOARD.frame, y: box.y + BOARD.frame, w: box.w - BOARD.frame * 2, h: box.h - BOARD.frame * 2 }
+  const top = inner.y + BOARD.header
+  const w = Math.min(BOARD.note.w, inner.w - 6)
+  const { h } = BOARD.note
+  const cols = Math.max(1, Math.floor((inner.w - 4 + BOARD.gap) / (w + BOARD.gap)))
+  const rows = Math.max(0, Math.floor((inner.y + inner.h - top + BOARD.gap) / (h + BOARD.gap)))
+  const count = Math.min(items.length, cols * rows)
+  const used = Math.ceil(count / cols)
+  // Centre the grid across the board, and spread its rows down it.
+  const left = inner.x + Math.round((inner.w - (cols * w + (cols - 1) * BOARD.gap)) / 2)
+  const rowGap = used > 1 ? Math.min(BOARD.gap * 3, (inner.y + inner.h - top - used * h) / used) : BOARD.gap
+  const notes = Array.from({ length: count }, (_, i) => ({
+    index: i,
+    left: left + (i % cols) * (w + BOARD.gap),
+    top: Math.round(top + rowGap / 2 + Math.floor(i / cols) * (h + rowGap)),
+    width: w,
+    height: h,
+  }))
+  return { ...box, header: { left: inner.x + 5, top: inner.y + 3, width: inner.w - 10, height: BOARD.header - 6 }, notes }
 }
 
 /*
@@ -247,7 +275,7 @@ function stackUpright(wall, deskY, beamH, books) {
   const w = wall.x2 - wall.x1 - 20
   const below = toolShelf.y + 22
   // A monitor much taller than 3:2 looks stretched; when there's that much height, a small
-  // shelf goes between the portrait and the monitor instead.
+  // shelf goes between the library and the monitor instead.
   const tall = deskY - 8 - below > w * MAX_UPRIGHT + 30
   const midShelf = tall ? { x1: wall.x1 + 14, x2: wall.x2 - 10, y: below + 16 } : null
   const y = midShelf ? midShelf.y + 16 : below

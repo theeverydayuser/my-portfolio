@@ -17,6 +17,7 @@ export function Book({ work, onOpen, onPreview, className = '', style }) {
     <button
       type="button"
       className={`${styles.book} ${className}`}
+      data-work
       style={{
         ...style,
         backgroundImage: `url(${coverUrl(work.cover)})`,
@@ -41,6 +42,7 @@ function Spine({ work, slot, onOpen, L }) {
     <button
       type="button"
       className={`${styles.spine} ${styles.onShelf}`}
+      data-work
       style={{
         ...place(slot, L),
         backgroundImage: `url(${spineUrl(work.cover, slot.width, slot.height)})`,

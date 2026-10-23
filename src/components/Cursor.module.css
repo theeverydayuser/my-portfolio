@@ -1,0 +1,71 @@
+/* While the pixel cursor is on, the system one is hidden everywhere (set on <html>). */
+.hideNative,
+.hideNative * {
+  cursor: none !important;
+}
+
+/* Follows the pointer: its origin is the pointer's hot spot. Hidden until the pointer moves. */
+.cursor {
+  position: fixed;
+  z-index: 2147483647;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.cursor[data-shown] {
+  opacity: 1;
+}
+
+.cursor img {
+  position: absolute;
+  display: block;
+  /* The cursor has no size of its own, so the page's img { max-width: 100% } would squash these to nothing. */
+  max-width: none;
+  image-rendering: pixelated;
+  filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.35));
+}
+
+/*
+  The "My works" tag rides beside the cursor (clear of the big arrow and the hand), so the
+  two always move together. Its arrow turns in place to point at the works.
+*/
+.tag {
+  position: absolute;
+  left: 44px;
+  top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px 3px 5px;
+  background: #ffd27a;
+  color: #1a1020;
+  font-family: var(--pixel-font);
+  font-size: 13px;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.tag[data-shown] {
+  opacity: 1;
+}
+
+/* A square for the arrow to turn in, so the words never shift. */
+.guideBox {
+  position: relative;
+  flex: none;
+  width: 22px;
+  height: 22px;
+}
+
+.cursor .guide {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  filter: none;
+}

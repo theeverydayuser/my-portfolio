@@ -1,0 +1,106 @@
+/* A cork board, the same in light and dark (it's an object, like the one in the room). */
+.board {
+  min-height: 100%;
+  padding: calc(28 * var(--u)) calc(32 * var(--u)) calc(36 * var(--u));
+  background:
+    radial-gradient(circle at 20% 30%, rgba(0, 0, 0, 0.06) 0 1px, transparent 2px) 0 0 / 9px 9px,
+    radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.08) 0 1px, transparent 2px) 0 0 / 13px 13px,
+    #b98a5a;
+}
+
+.intro {
+  margin-bottom: calc(24 * var(--u));
+  color: #2a1e14;
+}
+
+.intro h2 {
+  margin: 0 0 calc(6 * var(--u));
+  font-family: var(--pixel-font);
+  font-size: max(22px, calc(30 * var(--u)));
+  font-weight: 600;
+}
+
+.intro p {
+  margin: 0;
+  font-size: max(14px, calc(17 * var(--u)));
+}
+
+.intro a {
+  color: inherit;
+  font-weight: 600;
+}
+
+.notes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: calc(28 * var(--u)) calc(24 * var(--u));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A pinned paper note, slightly askew. */
+.note {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(16 * var(--u));
+  padding: calc(26 * var(--u)) calc(22 * var(--u)) calc(20 * var(--u));
+  background: #fff6d6;
+  color: #2a1e14;
+  rotate: var(--tilt);
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.22);
+}
+
+.note:nth-child(3n + 2) {
+  background: #ffe1e8;
+}
+
+.note:nth-child(3n) {
+  background: #dcefff;
+}
+
+.note::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: #d6453d;
+  box-shadow: inset -2px -2px 0 rgba(0, 0, 0, 0.3), 0 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.quote {
+  margin: 0;
+  font-size: max(15px, calc(18 * var(--u)));
+  line-height: 1.5;
+}
+
+.quote p {
+  margin: 0 0 0.6em;
+}
+
+.quote p:last-child {
+  margin-bottom: 0;
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  font-size: max(13px, calc(15 * var(--u)));
+  line-height: 1.35;
+}
+
+.who strong {
+  font-size: max(15px, calc(17 * var(--u)));
+}
+
+.relation {
+  color: #7a5a3e;
+}

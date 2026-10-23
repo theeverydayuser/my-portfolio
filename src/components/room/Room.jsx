@@ -3,6 +3,8 @@ import { OPENS, SOCIALS } from '../../data/room.js'
 import { APP_ICONS, LAMP_SIZE, PLAQUE_H, PLATE, SOCIAL_ICONS, SOCIAL_SIZE, drawLamp, drawPlaque, drawPlate } from '../../room-art/sprites.js'
 import { spriteUrl } from '../../room-art/to-image.js'
 import { works } from '../../data/works.js'
+import { testimonials } from '../../data/testimonials.js'
+import { noteStyle } from './kind-words.js'
 import { layout, roomSize } from '../../room-art/layout.js'
 import RoomCanvas, { ChairCanvas } from './RoomCanvas.jsx'
 import Person from './Person.jsx'
@@ -13,6 +15,7 @@ import Opener from './Opener.jsx'
 import Props from './Props.jsx'
 import MusicPlayer from './MusicPlayer.jsx'
 import Tour from './Tour.jsx'
+import PullBoard from './PullBoard.jsx'
 import { pctX, pctY, place } from './scene.js'
 import styles from './Room.module.css'
 
@@ -84,7 +87,7 @@ export default function Room({ room, onOpen, monitorRef, appearance }) {
   // Only a very short phone gets a room taller than the screen.
   const scrolls = Boolean(size) && phone && size.H * size.scale > vh + 1
   return (
-    <main className={`${styles.room} ${scrolls ? styles.scrolls : ''}`}>
+    <main className={`${styles.room} ${scrolls ? styles.scrolls : ''}`} data-room>
       <h1 className="visually-hidden">Mide Adeshina — Portfolio</h1>
       {/* No room while the window has no size; it's drawn as soon as it gets one. */}
       {size && <Scene size={size} room={room} onOpen={onOpen} monitorRef={monitorRef} appearance={appearance} className={phone ? styles.tall : ''} />}
@@ -146,12 +149,8 @@ function Scene({ size, room, onOpen, monitorRef, appearance, className = '' }) {
         <VisitCounter visits={room.visits} here={room.here} L={L} />
         <Lamp L={L} appearance={appearance} />
         <Shelf works={works} L={L} onOpen={onOpen} onPreview={setPreview} />
-        {L.portrait && (
-          // The portrait is painted in the canvas; this is its click area and "About Me" callout.
-          <Opener opens="about" onOpen={onOpen} className={styles.frameHit} style={place({ left: L.portrait.x, top: L.portrait.y, width: L.portrait.w, height: L.portrait.h }, L)} tip={false}>
-            <span className={styles.aboutBubble} aria-hidden="true">About Me</span>
-          </Opener>
-        )}
+        {L.board && <TestimonialBoard L={L} onOpen={onOpen} />}
+        {L.pullCord && <PullBoard L={L} onOpen={onOpen} />}
         <AppNames L={L} />
         <Socials L={L} onOpen={onOpen} />
         <Plaque L={L} onOpen={onOpen} />
@@ -219,6 +218,41 @@ function Plaque({ L, onOpen }) {
 }
 
 /*
+  The testimonial board (painted in the room): a "Kind words" header and landscape notes
+  pinned down it, a few words from each recommendation. Any note opens them all in full.
+*/
+function TestimonialBoard({ L, onOpen }) {
+  const { header, notes } = L.board
+  return (
+    <>
+      <span className={styles.boardHeader} style={{ ...place(header, L), '--header-w': header.width }} aria-hidden="true">
+        Kind words
+      </span>
+      <ul className={styles.boardNotes} aria-label="Kind words from people I've worked with">
+        {notes.map((slot) => {
+          const t = testimonials[slot.index]
+          return (
+            <li key={t.id}>
+              <button
+                type="button"
+                className={styles.boardNote}
+                style={{ ...place(slot, L), ...noteStyle(slot.index) }}
+                aria-label={`${t.name}: ${t.excerpt} Read all the recommendations`}
+                onClick={(event) => onOpen('testimonials', event.currentTarget)}
+              >
+                <span className={styles.boardPin} aria-hidden="true" />
+                <span className={styles.boardQuote}>“{t.excerpt}”</span>
+                <span className={styles.boardName}>{t.name}</span>
+              </button>
+            </li>
+          )
+        })}
+      </ul>
+    </>
+  )
+}
+
+/*
   A plate hanging on a rope from a nail: the office is still being built, and in the meantime
   here's the CV (a click downloads it). It drops onto its nail when the room appears, then sways.
 */
@@ -271,8 +305,7 @@ function DebugOverlay({ L }) {
     { left: L.screen.x, top: L.screen.y, width: L.screen.w, height: L.screen.h, label: 'screen' },
     { ...L.sign, label: 'sign' },
     { ...L.counter, label: 'counter' },
-    ...(L.portrait ? [{ left: L.portrait.x, top: L.portrait.y, width: L.portrait.w, height: L.portrait.h, label: 'portrait' }] : []),
-    ...(L.freeSpot ? [{ left: L.freeSpot.x, top: L.freeSpot.y, width: L.freeSpot.w, height: L.freeSpot.h, label: 'free spot' }] : []),
+    ...(L.board ? L.board.notes.map((n) => ({ ...n, label: `note ${n.index + 1}` })) : []),
   ]
   return (
     <div className={styles.debug} aria-hidden="true">

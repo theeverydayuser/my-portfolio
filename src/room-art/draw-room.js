@@ -5,10 +5,8 @@ import { APP_ICONS, SPRITES, drawAppIcon, drawPlant, drawVine } from './sprites.
   Paints the room into a raster, back to front, from a layout (layout.js) and a palette.
   Everything visitors can move is NOT drawn here: those are separate sprites on the page.
   Nor is the chair (drawChairLayer), which goes in front of the person at the desk.
-  `art.portrait` is Mide's picture ({ w, h, data }, already the frame's inside size), painted
-  in so the plant sits in front of it.
 */
-export function drawRoom(r, L, pal, art = {}) {
+export function drawRoom(r, L, pal) {
   drawWall(r, L, pal)
   drawBeam(r, L, pal)
   drawTopShelf(r, L, pal)
@@ -19,7 +17,7 @@ export function drawRoom(r, L, pal, art = {}) {
   // The app icons, on the top shelf or the phone's own (after the shelves, so no glow dims them;
   // layout.js places them and the page puts their names over them on hover).
   for (const { index, x, y } of L.appIcons) drawAppIcon(r, APP_ICONS[index], x, y)
-  drawWallThings(r, L, pal, art)
+  drawWallThings(r, L, pal)
   drawMonitor(r, L, pal)
   if (L.caseW) drawBookcase(r, L, pal)
   drawDesk(r, L, pal)
@@ -108,8 +106,8 @@ function drawSpines(r, from, to, shelfY, pal, seed) {
   }
 }
 
-function drawWallThings(r, L, pal, art) {
-  drawPortrait(r, L.portrait, art.portrait)
+function drawWallThings(r, L, pal) {
+  if (L.board) drawBoard(r, L.board, pal)
 
   // The light bar on top of the monitor.
   const lb = L.lightBar
@@ -119,26 +117,21 @@ function drawWallThings(r, L, pal, art) {
 }
 
 /*
-  Mide's portrait, full height in the left column, in a gilt frame. `pixels` is the picture
-  as { w, h, data } (RGBA) at the frame's inside size, made by the page; until it arrives the
-  frame shows its dark mount.
+  The testimonial board: a wooden frame round a speckled cork panel (the page pins the notes
+  and writes the header on it).
 */
-function drawPortrait(r, p, pixels) {
-  if (!p) return
-  r.rect(p.x - 1, p.y - 1, p.w + 2, p.h + 2, '#06060e')
-  r.rect(p.x, p.y, p.w, p.h, '#b8862e')
-  r.hline(p.x, p.y, p.w, '#f2c46a')
-  r.vline(p.x, p.y, p.h, '#e0aa50')
-  r.hline(p.x, p.y + p.h - 1, p.w, '#6e4a1c')
-  r.vline(p.x + p.w - 1, p.y, p.h, '#7a5420')
-  r.rect(p.x + 2, p.y + 2, p.w - 4, p.h - 4, '#120e1a')
-  if (!pixels || pixels.w !== p.w - 4 || pixels.h !== p.h - 4) return
-  for (let j = 0; j < pixels.h; j++)
-    for (let i = 0; i < pixels.w; i++) {
-      const k = (j * pixels.w + i) * 4
-      // Slightly dimmed, so it sits in the night-lit room.
-      r.px(p.x + 2 + i, p.y + 2 + j, '#' + [0, 1, 2].map((c) => Math.round(pixels.data[k + c] * 0.9).toString(16).padStart(2, '0')).join(''))
-    }
+function drawBoard(r, b, pal) {
+  r.rect(b.x - 1, b.y - 1, b.w + 2, b.h + 2, pal.woodDark)
+  r.rect(b.x, b.y, b.w, b.h, pal.woodFront)
+  r.hline(b.x, b.y, b.w, pal.woodLight)
+  r.vline(b.x, b.y, b.h, pal.woodTop)
+  const c = { x: b.x + 3, y: b.y + 3, w: b.w - 6, h: b.h - 6 }
+  r.gradientV(c.x, c.y, c.w, c.h, [pal.corkLight, pal.cork, pal.cork])
+  const rand = seeded(23)
+  for (let k = 0; k < (c.w * c.h) / 9; k++) r.px(c.x + Math.floor(rand() * c.w), c.y + Math.floor(rand() * c.h), rand() > 0.3 ? pal.corkDark : pal.corkLight)
+  // The frame's shadow on the cork, along the top and left.
+  r.hline(c.x, c.y, c.w, pal.corkDark)
+  r.vline(c.x, c.y, c.h, pal.corkDark)
 }
 
 function drawMonitor(r, L, pal) {
@@ -233,7 +226,7 @@ function drawDeskThings(r, L, pal) {
 function drawUnderDesk(r, L, pal) {
   const top = L.deskY + 30
   // PC on the floor, left.
-  const pc = { x: L.windowW + 6, w: 42 }
+  const pc = { x: L.boardW + 6, w: 42 }
   r.rect(pc.x, top, pc.w, L.H - top, pal.pc)
   r.hline(pc.x, top, pc.w, '#1a2040')
   const lx = pc.x + 12
@@ -283,13 +276,13 @@ function drawChair(r, L, pal) {
 
 function drawPlants(r, L, pal) {
   const rand = seeded(42)
-  // Big plant on the desk by the window (the lamp stands at the end of the top shelf).
-  drawPlant(r, rand, L.windowW + 18, L.deskY + 2, 2, pal)
+  // Big plant on the desk: against the testimonial board's corner, or on phones at the left.
+  drawPlant(r, rand, L.compact ? 18 : L.boardW + 4, L.deskY + 2, 2, pal)
   // A plant at the foot of the bookcase, on the desk.
   if (!L.compact) drawPlant(r, rand, L.W - 14, L.deskY + 1, 1, pal)
   // Vines trailing from the top shelf's ends and down the bookcase's side.
   drawVine(r, rand, L.shelf.x1 + 2, L.shelf.y + 2, 48, pal)
   drawVine(r, rand, L.shelf.x1 + 9, L.shelf.y + 2, 30, pal)
   drawVine(r, rand, L.caseX - 4, L.beamH, 70, pal)
-  drawVine(r, rand, L.windowW + 3, L.beamH, 38, pal)
+  drawVine(r, rand, L.boardW + 3, L.beamH, 38, pal)
 }

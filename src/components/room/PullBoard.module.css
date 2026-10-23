@@ -1,0 +1,214 @@
+/*
+  The pull cord, hanging from the beam (positioned in room pixels by place(); its box is the
+  cord's resting length). --stretch is how far it's being pulled, in CSS px.
+*/
+.cord {
+  position: absolute;
+  z-index: 3;
+  transform-origin: 50% 0;
+  animation: sway 3.6s ease-in-out infinite;
+}
+
+/* Held still while it's being pulled or the board is down. */
+.held {
+  animation: none;
+}
+
+.string {
+  position: absolute;
+  top: 0;
+  left: calc(-0.5 * var(--s));
+  width: var(--s);
+  height: calc(100% + var(--stretch, 0px));
+  background: #d9c79c;
+  box-shadow: calc(0.4 * var(--s)) 0 0 rgba(0, 0, 0, 0.35);
+}
+
+/* The round hand pull, a brass ring at the end of the cord. */
+.ring {
+  position: absolute;
+  top: calc(100% + var(--stretch, 0px));
+  left: 0;
+  width: calc(8 * var(--s));
+  height: calc(8 * var(--s));
+  translate: -50% 0;
+  padding: 0;
+  border: calc(1.6 * var(--s)) solid #e2b867;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: inset 0 0 0 calc(0.5 * var(--s)) rgba(0, 0, 0, 0.35), 0 calc(0.6 * var(--s)) 0 rgba(0, 0, 0, 0.4);
+  touch-action: none;
+}
+
+/* A thumb-sized target round the small ring. */
+.ring::before {
+  content: '';
+  position: absolute;
+  inset: -14px;
+}
+
+.ring:focus-visible {
+  outline: 2px dashed #ffd27a;
+  outline-offset: 3px;
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    rotate: -4deg;
+  }
+  50% {
+    rotate: 4deg;
+  }
+}
+
+/*
+  The board: rolled up above the screen, coming down as --progress goes from 0 to 1. A cork
+  sheet between two wooden rails, the same ring hanging from its bottom to roll it back.
+*/
+.board {
+  position: fixed;
+  z-index: 6;
+  top: 0;
+  right: 0;
+  left: 0;
+  max-height: 92svh;
+  display: flex;
+  flex-direction: column;
+  padding: 0 14px;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(0, 0, 0, 0.1) 0 1px, transparent 2px) 0 0 / 9px 9px,
+    radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.1) 0 1px, transparent 2px) 0 0 / 13px 13px,
+    #b98a5a;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+  translate: 0 calc((var(--progress) - 1) * 100% - (1 - var(--progress)) * 60px);
+  transition: translate 420ms cubic-bezier(0.3, 1.25, 0.5, 1);
+  touch-action: none;
+  user-select: none;
+}
+
+/* Following the finger: no easing in the way. */
+.dragging {
+  transition: none;
+}
+
+.rail {
+  flex: none;
+  height: 14px;
+  margin: 0 -14px;
+  background: linear-gradient(#a8693c, #7a4028 70%, #4b2622);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.header {
+  align-self: center;
+  margin: 16px 0 14px;
+  padding: 4px 18px 2px;
+  background: #fbf3df;
+  color: #8a2f22;
+  font-family: 'Caveat', cursive;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  rotate: -1.5deg;
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.notes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 12px;
+  min-height: 0;
+  margin: 0;
+  padding: 4px 2px;
+  overflow: hidden;
+  list-style: none;
+}
+
+/* A sticky note in its own handwriting (--hand…, --paper, --tilt from kind-words.js). */
+.note {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 104px;
+  padding: 16px 10px 10px;
+  background: var(--paper);
+  color: #2a1e14;
+  text-align: left;
+  rotate: var(--tilt);
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.28);
+}
+
+.pin {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: #d6453d;
+  box-shadow: inset -2px -2px 0 rgba(0, 0, 0, 0.3), 0 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.quote {
+  font-family: var(--hand);
+  font-size: calc(19px * var(--hand-scale));
+  font-weight: var(--hand-weight);
+  line-height: 1.1;
+  -webkit-text-stroke: var(--hand-ink) currentColor;
+}
+
+.name {
+  color: #5a3c24;
+  font-family: var(--hand);
+  font-size: calc(15px * var(--hand-scale));
+  font-weight: var(--hand-weight);
+  line-height: 1.1;
+}
+
+.name::before {
+  content: '— ';
+}
+
+.note:focus-visible {
+  outline: 2px dashed #8a2f22;
+  outline-offset: 2px;
+}
+
+.hint {
+  margin: 12px 0 10px;
+  color: rgba(42, 30, 20, 0.7);
+  font-family: 'Caveat', cursive;
+  font-size: 17px;
+  text-align: center;
+}
+
+/* The cord hanging under the bottom rail, with the ring to pull it back up. */
+.bottomCord {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  --s: 2px;
+  width: 0;
+  height: 22px;
+}
+
+.bottomRing {
+  --s: 2px;
+  top: calc(100% + 22px);
+  left: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cord {
+    animation: none;
+  }
+
+  .board {
+    transition: none;
+  }
+}

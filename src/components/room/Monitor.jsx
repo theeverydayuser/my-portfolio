@@ -4,9 +4,6 @@ import { works } from '../../data/works.js'
 import { place } from './scene.js'
 import styles from './Room.module.css'
 
-// Shown until real demos are added: a terminal typing over the screen's own wallpaper.
-const LINES = ['mide@studio:~$ ./demo-reel', 'loading the demos…', 'tip: move the mug. someone will move it back.']
-
 /*
   The monitor's screen. Plays the demo clips in src/data/demos.js, one after another,
   and only while the monitor is on screen (clips load on demand, so the page stays fast).
@@ -40,7 +37,7 @@ const Monitor = forwardRef(function Monitor({ L, preview, reel, onOpen }, ref) {
 
   return (
     <div ref={ref} className={styles.monitor} style={style}>
-      {preview ? <WorkPreview work={preview} upright={upright} /> : demos.length ? <DemoReel /> : <Terminal />}
+      {preview ? <WorkPreview work={preview} upright={upright} /> : demos.length ? <DemoReel /> : <Intro />}
       <span className={styles.scanlines} aria-hidden="true" />
     </div>
   )
@@ -122,22 +119,14 @@ function DemoReel() {
   )
 }
 
-function Terminal() {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const full = LINES.join('\n')
-  const [typed, setTyped] = useState(reduced ? full.length : 0)
-
-  // Types the lines out, pauses, then starts over.
-  useEffect(() => {
-    if (reduced) return
-    const timer = setInterval(() => setTyped((n) => (n > full.length + 60 ? 0 : n + 1)), 55)
-    return () => clearInterval(timer)
-  }, [reduced, full.length])
-
+// Before a book is looked at: who Mide is, big in the middle of the screen.
+function Intro() {
   return (
-    <div className={styles.terminal} aria-label={LINES.join('. ')}>
-      <span aria-hidden="true">{full.slice(0, typed)}</span>
-      <span className={styles.cursor} aria-hidden="true" />
+    <div className={styles.intro}>
+      <p className={styles.introName}>Mide Samuel</p>
+      <p className={styles.introRole}>Design Engineer</p>
+      <p className={styles.introSkills}>Designing AI Products · Building AI Interfaces · Shipping AI to Production</p>
+      <p className={styles.introHint}>▸ hover a book to see the work</p>
     </div>
   )
 }
