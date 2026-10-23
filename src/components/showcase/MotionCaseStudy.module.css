@@ -1,0 +1,917 @@
+/*
+  The motion design system case study (Figma: NaXum — Motion Design System (Case Study)).
+  Every size is the deck's 1920-wide value × --u (one design pixel at this width), with a
+  floor so text stays readable when the page is narrow. Colours are the deck's tokens.
+*/
+.deck {
+  --night: #03070b;
+  --night-panel: #0b1621;
+  --ink: #000100;
+  --ink-600: #565857;
+  --ink-400: #a2a4a3;
+  --silver: #f4f6f8;
+  --paper: #f8f8f8;
+  --blue-600: #3685bb;
+  --blue-400: #6bafdd;
+  --blue-200: #b7d8f0;
+  --blue-100: #daebf7;
+  --green: #16a34a;
+  --green-100: #dcfce7;
+  --coral: #f55d3e;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  /* Named, so the narrow-page rules below measure the deck, never a nested container. */
+  container: deck / inline-size;
+  font-family: 'Plus Jakarta Sans', var(--font-text);
+}
+
+/* One slide: a rounded panel, dark (night) or light (paper), each with the deck's glow. */
+.slide {
+  --u: calc(100cqw / 1920);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: max(14px, calc(28 * var(--u)));
+  padding: max(28px, calc(110 * var(--u))) max(20px, calc(120 * var(--u))) max(22px, calc(48 * var(--u)));
+  border-radius: max(14px, calc(28 * var(--u)));
+  overflow: hidden;
+}
+
+.dark {
+  background: radial-gradient(ellipse 110% 45% at 50% 19%, rgba(29, 68, 96, 0.85), rgba(29, 68, 96, 0)) var(--night);
+  color: var(--silver);
+}
+
+.light {
+  background: radial-gradient(ellipse 110% 45% at 50% 19%, rgba(218, 235, 247, 0.9), rgba(218, 235, 247, 0)) var(--paper);
+  color: var(--ink);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: max(10px, calc(40 * var(--u)));
+  color: var(--ink-400);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(10px, calc(18 * var(--u)));
+  letter-spacing: 0.12em;
+}
+
+/* ── Type ───────────────────────────────────────────── */
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: max(6px, calc(14 * var(--u)));
+  margin: 0;
+  color: var(--blue-400);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(11px, calc(18 * var(--u)));
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+/* The dot's artwork carries its own glow, so it's drawn bigger than the 10px dot it shows. */
+.eyebrowDot {
+  width: max(22px, calc(34 * var(--u)));
+  height: auto;
+  margin: max(-12px, calc(-12 * var(--u)));
+}
+
+.headline {
+  margin: 0;
+  line-height: 0;
+}
+
+.headline img {
+  width: min(100%, max(240px, calc(var(--w) * var(--u))));
+  height: auto;
+}
+
+.bodyL {
+  max-width: 40ch;
+  margin: 0;
+  font-size: max(16px, calc(30 * var(--u)));
+  line-height: 1.47;
+  letter-spacing: -0.01em;
+}
+
+.dark .bodyL {
+  color: rgba(244, 246, 248, 0.78);
+}
+
+.light .bodyL {
+  color: var(--ink-600);
+}
+
+.titleCard {
+  margin: 0;
+  font-size: max(17px, calc(28 * var(--u)));
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+}
+
+.bodyS {
+  margin: 0;
+  font-size: max(14px, calc(20 * var(--u)));
+  line-height: 1.5;
+}
+
+.light .bodyS {
+  color: var(--ink-600);
+}
+
+.bodyXs {
+  display: block;
+  margin: 0;
+  font-size: max(13px, calc(18 * var(--u)));
+  line-height: 1.6;
+}
+
+.mono {
+  margin: 0;
+  font-family: 'Geist Mono', monospace;
+  font-size: max(10px, calc(18 * var(--u)));
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.12em;
+}
+
+.muted {
+  color: var(--ink-400);
+}
+
+.light .bodyXs.muted,
+.light .muted {
+  color: var(--ink-400);
+}
+
+.ink {
+  color: var(--ink);
+}
+
+.blue200 {
+  color: var(--blue-200);
+}
+
+.blue400 {
+  color: var(--blue-400);
+}
+
+.blue600 {
+  color: var(--blue-600);
+}
+
+.green {
+  color: var(--green);
+}
+
+.coral {
+  color: var(--coral);
+}
+
+/* ── Images and films ───────────────────────────────── */
+
+.img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: max(10px, calc(20 * var(--u)));
+}
+
+.glow {
+  box-shadow: 0 calc(40 * var(--u)) calc(80 * var(--u)) calc(-20 * var(--u)) rgba(0, 0, 0, 0.6), 0 0 max(24px, calc(60 * var(--u))) rgba(79, 161, 214, 0.32);
+}
+
+.lightShadow {
+  box-shadow: 0 calc(30 * var(--u)) calc(70 * var(--u)) calc(-20 * var(--u)) rgba(28, 69, 97, 0.18);
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: max(10px, calc(20 * var(--u)));
+  margin: 0;
+}
+
+.figure blockquote {
+  margin: 0;
+}
+
+/* A film before it plays: its still and a round play button. */
+.filmStill {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border-radius: max(10px, calc(20 * var(--u)));
+}
+
+/* Every card is 16:9, whatever shape its film is (Money flow is nearer 5:4), so a row of
+   cards lines up; the preview fills it. The popup shows the whole frame. */
+.filmStill video {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(46px, calc(96 * var(--u)));
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: rgba(3, 7, 11, 0.62);
+  box-shadow: 0 0 0 2px rgba(183, 216, 240, 0.7), 0 10px 30px rgba(0, 0, 0, 0.45);
+  transition: scale 160ms ease, background 160ms ease;
+}
+
+.play::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  translate: -50% -50%;
+  border-style: solid;
+  border-width: 0.42em 0 0.42em 0.72em;
+  border-color: transparent transparent transparent #f4f6f8;
+  font-size: max(16px, calc(32 * var(--u)));
+}
+
+.filmStill:hover .play {
+  scale: 1.08;
+  background: rgba(54, 133, 187, 0.85);
+}
+
+.filmStill:focus-visible {
+  outline: 2px solid var(--blue-400);
+  outline-offset: 4px;
+}
+
+/* The film popup: over everything, the room dimmed right down behind it. */
+.popup {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: max(16px, 4vh) max(16px, 4vw);
+  background: rgba(2, 4, 8, 0.86);
+  animation: popup-in 200ms ease;
+}
+
+.popupFrame {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(1280px, 100%, calc((100vh - 120px) * 16 / 9));
+}
+
+.popupVideo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  background: #000;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(79, 161, 214, 0.25);
+}
+
+.popupTitle {
+  margin: 0;
+  color: #f4f6f8;
+  font-family: 'Plus Jakarta Sans', var(--font-text);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.popupClose {
+  position: fixed;
+  top: max(12px, 2vh);
+  right: max(12px, 2vw);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #f4f6f8;
+  font-size: 18px;
+  transition: background 120ms ease;
+}
+
+.popupClose:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.popupClose:focus-visible {
+  outline: 2px solid #6bafdd;
+  outline-offset: 2px;
+}
+
+@keyframes popup-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popup {
+    animation: none;
+  }
+}
+
+/* ── Layouts ────────────────────────────────────────── */
+
+/* Text on the left, a big picture with a smaller one overlapping its lower right. */
+.cover {
+  display: grid;
+  grid-template-columns: minmax(0, 820fr) minmax(0, 880fr);
+  align-items: center;
+  column-gap: calc(100 * var(--u));
+}
+
+.cover .footer {
+  grid-column: 1 / -1;
+}
+
+.coverText {
+  display: flex;
+  flex-direction: column;
+  gap: max(14px, calc(30 * var(--u)));
+}
+
+.pair {
+  position: relative;
+  padding-bottom: 30%;
+}
+
+.pairBig {
+  width: 100%;
+}
+
+.pair .pairSmall {
+  position: absolute;
+  right: 3%;
+  bottom: 0;
+  width: 70%;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: minmax(0, 880fr) minmax(0, 800fr);
+  align-items: start;
+  column-gap: calc(120 * var(--u));
+}
+
+.header > div {
+  display: flex;
+  flex-direction: column;
+  gap: max(12px, calc(24 * var(--u)));
+}
+
+.header .bodyL {
+  margin-top: max(0px, calc(66 * var(--u)));
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  column-gap: calc(120 * var(--u));
+  row-gap: 28px;
+}
+
+.split > div {
+  display: flex;
+  flex-direction: column;
+  gap: max(14px, calc(28 * var(--u)));
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: max(20px, calc(56 * var(--u)));
+}
+
+.numbered {
+  display: flex;
+  flex-direction: column;
+  gap: max(18px, calc(40 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.numbered li {
+  display: grid;
+  grid-template-columns: max(30px, calc(70 * var(--u))) minmax(0, 1fr);
+  align-items: baseline;
+}
+
+.numbered li > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.grid2,
+.grid3,
+.grid4,
+.pipeline {
+  display: grid;
+  gap: max(14px, calc(30 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grid2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: max(16px, calc(40 * var(--u)));
+}
+
+.grid3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: max(14px, calc(25 * var(--u)));
+}
+
+/* The four steps of a frame, joined by short blue lines. */
+.pipeline {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: max(18px, calc(50 * var(--u)));
+}
+
+.pipeline li {
+  position: relative;
+}
+
+.pipeline li + li::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: max(18px, calc(50 * var(--u)));
+  height: 3px;
+  border-radius: 2px;
+  background: var(--blue-400);
+}
+
+.nightCard {
+  display: flex;
+  flex-direction: column;
+  gap: max(6px, calc(10 * var(--u)));
+  margin: 0;
+  padding: max(18px, calc(28 * var(--u))) max(18px, calc(30 * var(--u)));
+  border-radius: max(14px, calc(22 * var(--u)));
+  background: var(--night-panel);
+}
+
+.paperCard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: max(16px, calc(24 * var(--u))) max(18px, calc(30 * var(--u)));
+  border-radius: max(14px, calc(22 * var(--u)));
+  background: #fff;
+  box-shadow: 0 calc(14 * var(--u)) calc(40 * var(--u)) calc(-12 * var(--u)) rgba(28, 69, 97, 0.1);
+}
+
+.code {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5em 2.5em;
+  color: var(--blue-200);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(11px, calc(18 * var(--u)));
+  letter-spacing: 0.12em;
+}
+
+.code code {
+  font: inherit;
+}
+
+.codeComment {
+  opacity: 0.7;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: max(8px, calc(16 * var(--u)));
+  margin: max(8px, calc(40 * var(--u))) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pills li {
+  padding: max(8px, calc(16 * var(--u))) max(14px, calc(26 * var(--u)));
+  border-radius: 999px;
+  background: var(--blue-100);
+  color: var(--blue-600);
+  font-size: max(13px, calc(20 * var(--u)));
+  font-weight: 600;
+}
+
+.pills .pillGreen {
+  background: var(--green-100);
+  color: var(--green);
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: max(18px, calc(36 * var(--u))) max(12px, calc(20 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.swatches li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.swatch {
+  aspect-ratio: 1;
+  margin-bottom: max(6px, calc(14 * var(--u)));
+  border-radius: max(12px, calc(22 * var(--u)));
+  box-shadow: 0 calc(16 * var(--u)) calc(36 * var(--u)) calc(-10 * var(--u)) rgba(28, 69, 97, 0.16), inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+.swatchName {
+  font-size: max(14px, calc(22 * var(--u)));
+  font-weight: 600;
+}
+
+.avatars {
+  border-radius: 0;
+}
+
+/*
+  A move from the motion language: its name and description, then four real frames joined
+  by arrows, then the move itself, playing (the LIVE tile, picked out in blue).
+*/
+.moves {
+  display: flex;
+  flex-direction: column;
+  gap: max(22px, calc(42 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.moveRow {
+  display: grid;
+  grid-template-columns: minmax(0, 400fr) minmax(0, 1320fr);
+  align-items: start;
+  column-gap: calc(40 * var(--u));
+}
+
+.moveText {
+  display: flex;
+  flex-direction: column;
+  gap: max(4px, calc(6 * var(--u)));
+  padding-top: max(0px, calc(4 * var(--u)));
+}
+
+.frames {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: max(18px, calc(44 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.frames li {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: max(4px, calc(9 * var(--u)));
+}
+
+/* The arrow between one frame and the next, in the gap, level with the middle of the frame:
+   placed in the tile's first grid row (the frame's), so that row is what it centres on. */
+.frames li + li::before {
+  content: '→';
+  position: absolute;
+  grid-row: 1;
+  grid-column: 1;
+  top: 50%;
+  right: 100%;
+  width: max(18px, calc(44 * var(--u)));
+  translate: 0 -50%;
+  text-align: center;
+  line-height: 1;
+  color: var(--blue-400);
+  font-size: max(14px, calc(28 * var(--u)));
+  font-weight: 600;
+}
+
+.frame {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: max(8px, calc(12 * var(--u)));
+  background: #000;
+  box-shadow: 0 0 max(12px, calc(28 * var(--u))) rgba(79, 161, 214, 0.22);
+}
+
+.liveFrame .frame {
+  box-shadow: 0 0 0 2px var(--blue-400), 0 0 max(16px, calc(36 * var(--u))) rgba(107, 175, 221, 0.45);
+}
+
+.sounds {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: max(14px, calc(22 * var(--u))) max(28px, calc(80 * var(--u)));
+  margin: max(10px, calc(30 * var(--u))) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sounds li {
+  display: flex;
+  align-items: flex-start;
+  gap: max(10px, calc(14 * var(--u)));
+}
+
+.sounds li > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.light .sounds .bodyXs {
+  color: var(--ink-600);
+}
+
+.soundDot {
+  flex: none;
+  width: max(9px, calc(12 * var(--u)));
+  height: auto;
+  margin-top: max(3px, calc(5 * var(--u)));
+}
+
+.rule {
+  gap: max(4px, calc(6 * var(--u)));
+  padding: max(16px, calc(24 * var(--u)));
+}
+
+.ruleText {
+  margin: 0;
+  font-size: max(16px, calc(24 * var(--u)));
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+}
+
+.shipped {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.shipped .filmStill {
+  margin-bottom: max(10px, calc(19 * var(--u)));
+}
+
+.shippedTitle {
+  margin: 0;
+  font-size: max(16px, calc(24 * var(--u)));
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.stat {
+  margin: 0 0 max(4px, calc(14 * var(--u)));
+  font-size: max(36px, calc(72 * var(--u)));
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.close {
+  align-items: center;
+  padding-top: max(48px, calc(300 * var(--u)));
+  text-align: center;
+}
+
+.close .headline {
+  align-self: stretch;
+}
+
+.close .headline img {
+  display: block;
+  margin-inline: auto;
+}
+
+.close .bodyL {
+  max-width: 60ch;
+}
+
+.close .footer {
+  align-self: stretch;
+  text-align: left;
+}
+
+.wordmark {
+  width: max(150px, calc(320 * var(--u)));
+  height: auto;
+  margin-top: max(12px, calc(40 * var(--u)));
+}
+
+/* The mascot slide's live cards (they replace the deck's two mascot pictures). */
+.skinsCard,
+.moodCard {
+  container-type: inline-size;
+  border-radius: max(10px, calc(20 * var(--u)));
+  color: #0d1f2c;
+}
+
+.skinsCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  aspect-ratio: 880 / 495;
+  /* Percentages (of the card's width), not cqw: a box can't size itself by its own container. */
+  padding: 3% 5%;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, #e6f1fa, rgba(230, 241, 250, 0)) #f6f7f8;
+}
+
+.skinsTitle {
+  margin: 0;
+  font-size: 5cqw;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  text-align: center;
+}
+
+.skinsTitle span {
+  color: #4fa0d5;
+}
+
+.skins {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2.4cqw;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.skins li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.skins svg {
+  margin-bottom: 1.2cqw;
+}
+
+.skinName {
+  font-size: 1.5cqw;
+  font-weight: 700;
+}
+
+.skinNote {
+  color: #8a8c8b;
+  font-family: 'Geist Mono', monospace;
+  font-size: 1.2cqw;
+}
+
+.moodCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36%;
+  align-items: center;
+  gap: 4%;
+  aspect-ratio: 620 / 349;
+  padding: 6% 8%;
+  background: radial-gradient(ellipse 70% 70% at 70% 40%, #eef6fc, rgba(238, 246, 252, 0)) #daebf7;
+}
+
+.moodCount {
+  margin: 0 0 2cqw;
+  color: #6b7f8f;
+  font-family: 'Geist Mono', monospace;
+  font-size: 1.6cqw;
+  letter-spacing: 0.08em;
+}
+
+.moodName {
+  margin: 0;
+  color: #1d4460;
+  font-size: 10cqw;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.moodNote {
+  margin: 2.4cqw 0 0;
+  color: #3685bb;
+  font-size: 2.6cqw;
+}
+
+/* The films grid: the first film large on the left, the other four two by two beside it. */
+.filmGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: max(16px, calc(32 * var(--u))) max(14px, calc(28 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.filmGrid li {
+  display: flex;
+  flex-direction: column;
+  gap: max(8px, calc(16 * var(--u)));
+}
+
+.filmGrid .filmGridMain {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.filmGridMain .shippedTitle {
+  font-size: max(18px, calc(30 * var(--u)));
+}
+
+/* ── Narrow pages (phones, small windows): one column ── */
+
+@container deck (max-width: 760px) {
+  .cover,
+  .header,
+  .split,
+  .grid2 {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 24px;
+  }
+
+  .header .bodyL {
+    margin-top: 0;
+  }
+
+  .grid3,
+  .grid4,
+  .pipeline,
+  .filmGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .moveRow {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 14px;
+  }
+
+  /* The live move leads, full width; the four frames sit in a row under it, no arrows. */
+  .frames {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .frames .liveFrame {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .frames li + li::before {
+    display: none;
+  }
+
+  /* The first film runs across the top; the other four sit two by two under it. */
+  .filmGrid .filmGridMain {
+    grid-row: auto;
+  }
+
+  /* Stacked two by two, the joining lines would point nowhere. */
+  .pipeline li + li::before {
+    display: none;
+  }
+
+  .sounds {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footer {
+    font-size: 9px;
+  }
+}
+
+@container deck (max-width: 480px) {
+  .grid3,
+  .grid4 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

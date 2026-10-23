@@ -155,6 +155,8 @@ export default function Cursor() {
     }
 
     const step = (now) => {
+      // Gone (the page is being torn down): stop.
+      if (!root.current) return
       root.current.style.transform = `translate(${x}px, ${y}px)`
       const box = inRoom && !overWork ? worksBox() : null
       // Close enough to the books: the tag has done its job.

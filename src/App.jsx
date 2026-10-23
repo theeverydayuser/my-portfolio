@@ -8,6 +8,7 @@ import AboutMe from './components/AboutMe.jsx'
 import Notes from './components/Notes.jsx'
 import Cursor from './components/Cursor.jsx'
 import Testimonials from './components/Testimonials.jsx'
+import Showcase from './components/Showcase.jsx'
 import { works } from './data/works.js'
 import { useAppearance } from './appearance.js'
 import { useRoom } from './room-sync/use-room.js'
@@ -15,7 +16,7 @@ import { armAutoplay } from './music/music.js'
 
 // Every openable window, keyed by the id used in the URL hash (e.g. #/board).
 const windows = Object.fromEntries([
-  ...works.map((w) => [w.id, { title: w.subtitle ? `${w.title} — ${w.subtitle}` : w.title, caseStudy: w.caseStudy }]),
+  ...works.map((w) => [w.id, { title: w.subtitle ? `${w.title} — ${w.subtitle}` : w.title, caseStudy: w.caseStudy, showcase: w.showcase }]),
   ['about-me', { title: 'About Me' }],
   ['notes', { title: 'Notes' }],
   ['testimonials', { title: 'Kind words' }],
@@ -119,7 +120,9 @@ export default function App() {
 
   // Background music starts with the visitor's first click or key press (see music/music.js).
   useEffect(() => armAutoplay(), [])
-  useEffect(() => setHash(frontId), [frontId])
+  useEffect(() => {
+    setHash(frontId)
+  }, [frontId])
 
   // A pasted link or edited URL opens (or raises) that window.
   useEffect(() => {
@@ -146,6 +149,20 @@ export default function App() {
       <Room room={room} onOpen={openWindow} monitorRef={monitorRef} appearance={appearance} />
       {open.map((w, index) => {
         const content = windows[w.id]
+        // Work with many parts opens full screen, with its own side nav, instead of a window.
+        if (content.showcase) {
+          return w.minimized ? null : (
+            <Showcase
+              key={w.id}
+              showcase={content.showcase}
+              closeRequest={closeRequests[w.id]}
+              zIndex={10 + index}
+              active={w.id === frontId}
+              onFocus={() => focusWindow(w.id)}
+              onClose={() => closeWindow(w.id, w.returnFocus)}
+            />
+          )
+        }
         return (
           <Window
             key={w.id}

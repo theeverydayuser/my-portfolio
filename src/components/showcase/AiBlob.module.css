@@ -1,0 +1,237 @@
+/*
+  The AiBlob's look, from the VO's AiBlob.vue. The pose arrives as --blob-* custom
+  properties (written by the component every frame); the skin as --_* (set per instance).
+*/
+.blob {
+  --blob-sx: 1;
+  --blob-sy: 1;
+  --blob-rot: 0deg;
+  --blob-face-x: 0px;
+  --blob-face-y: 0px;
+  --blob-pupil-x: 0px;
+  --blob-pupil-y: 0px;
+  --blob-eye-l: 1;
+  --blob-eye-r: 1;
+  --blob-eye-size: 1;
+  --blob-brow-y: 0px;
+  --blob-brow-a: 0deg;
+  --blob-brow-o: 0;
+  --blob-brow-asym: 0px;
+  --blob-cheek-o: 0.35;
+  --blob-heat: 0;
+  --blob-arm-l: 6deg;
+  --blob-arm-r: 6deg;
+  --blob-shadow-s: 1;
+  display: block;
+  width: var(--blob-size);
+  height: auto;
+  overflow: visible;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Outside the posed groups: a contact shadow that swayed with the body would look attached. */
+.floor {
+  opacity: 0.35;
+  transform-box: view-box;
+  transform-origin: 100px 190px;
+  transform: scale(var(--blob-shadow-s), 1);
+  pointer-events: none;
+}
+
+/* Every body transform pivots on the base centre: a jelly stuck to the floor. */
+.sway,
+.pose,
+.breathe {
+  transform-box: view-box;
+  transform-origin: 100px 185px;
+}
+
+.sway {
+  animation: blob-sway 5.3s ease-in-out infinite;
+}
+
+.pose {
+  transform: rotate(var(--blob-rot)) scale(var(--blob-sx), var(--blob-sy));
+}
+
+.breathe {
+  animation: blob-breathe 3.6s ease-in-out infinite;
+}
+
+/* Two periods that don't divide into each other, so the idle never visibly loops. */
+@keyframes blob-breathe {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(0.985, 1.025);
+  }
+}
+
+@keyframes blob-sway {
+  0%,
+  100% {
+    transform: rotate(-0.8deg);
+  }
+  50% {
+    transform: rotate(0.8deg);
+  }
+}
+
+.skin {
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+}
+
+.heat {
+  opacity: var(--blob-heat);
+  pointer-events: none;
+}
+
+.gloss {
+  fill: white;
+  opacity: 0.46;
+}
+
+.glossSm {
+  opacity: 0.3;
+}
+
+.face {
+  transform-box: view-box;
+  transform-origin: 100px 95px;
+  transform: translate(var(--blob-face-x), var(--blob-face-y));
+}
+
+.eye {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.eyeL {
+  transform: scale(var(--blob-eye-size), calc(var(--blob-eye-size) * var(--blob-eye-l)));
+}
+
+.eyeR {
+  transform: scale(var(--blob-eye-size), calc(var(--blob-eye-size) * var(--blob-eye-r)));
+}
+
+.sclera {
+  fill: color-mix(in srgb, var(--_skin-top) 22%, white);
+}
+
+.iris {
+  fill: var(--_ink);
+  transform: translate(var(--blob-pupil-x), var(--blob-pupil-y));
+}
+
+.glint {
+  fill: white;
+}
+
+.glintSm {
+  opacity: 0.55;
+}
+
+.brow {
+  fill: var(--_ink);
+  opacity: var(--blob-brow-o);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.browL {
+  transform: translateY(calc(var(--blob-brow-y) - var(--blob-brow-asym))) rotate(var(--blob-brow-a));
+}
+
+.browR {
+  transform: translateY(var(--blob-brow-y)) rotate(calc(var(--blob-brow-a) * -1));
+}
+
+.glasses {
+  pointer-events: none;
+}
+
+.lens {
+  fill: white;
+  fill-opacity: 0.09;
+  stroke: var(--_ink);
+  stroke-width: 2.6;
+}
+
+.frame {
+  fill: none;
+  stroke: var(--_ink);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+.mouth {
+  fill: var(--_ink);
+  stroke: var(--_ink);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.cheek {
+  fill: #f6b9b9;
+  opacity: calc(var(--blob-cheek-o) * 0.4);
+}
+
+/* Arms: stubs half-buried in the torso, pivoting on their buried end (a shoulder). */
+.arm {
+  fill: color-mix(in srgb, var(--_skin) 65%, var(--_skin-deep));
+  transform-box: fill-box;
+}
+
+.armL,
+.armL .armBob {
+  transform-origin: 93% 50%;
+}
+
+.armR,
+.armR .armBob {
+  transform-origin: 7% 50%;
+}
+
+.armL {
+  transform: rotate(var(--blob-arm-l));
+}
+
+.armR {
+  transform: rotate(calc(var(--blob-arm-r) * -1));
+}
+
+.armBob {
+  transform-box: fill-box;
+  animation: blob-arm 2.7s ease-in-out infinite;
+}
+
+.armR .armBob {
+  animation-duration: 3.1s;
+  animation-delay: -1.2s;
+}
+
+@keyframes blob-arm {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sway,
+  .breathe,
+  .armBob {
+    animation: none;
+  }
+}

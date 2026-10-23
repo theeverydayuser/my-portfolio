@@ -40,6 +40,9 @@ export async function play() {
   await engine.start()
 }
 
+// Whether the music is playing right now (outside React; components use useMusicPlaying).
+export const isPlaying = () => playing
+
 export function stop() {
   if (!playing) return
   engine.stop()
