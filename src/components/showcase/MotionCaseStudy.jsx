@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { isPlaying, play as playMusic, stop as stopMusic } from '../../music/music.js'
 import AiBlob from './AiBlob.jsx'
-import styles from './MotionCaseStudy.module.css'
+import { makeDeck } from './deck.jsx'
+import styles from './deck.module.css'
 
 /*
   "How I used Claude to create a motion design system for marketing": the NaXum motion
@@ -12,6 +13,7 @@ import styles from './MotionCaseStudy.module.css'
   Sizes follow the 1920-wide slides through --u (one design pixel), with floors for phones.
 */
 const A = '/assets/naxum-motion/'
+const { Slide, Headline, Img, Eyebrow, Header } = makeDeck({ base: A, line: 'NAXUM · MOTION DESIGN SYSTEM', total: 15 })
 
 // Each film, and a 4-second silent clip of it that loops on its card.
 const film = (file, title) => ({ src: `${A}${file}.mp4`, preview: `${A}${file}-preview.mp4`, title })
@@ -47,40 +49,6 @@ export default function MotionCaseStudy() {
 }
 
 /* ── Building blocks ─────────────────────────────────── */
-
-function Slide({ page, light = false, className = '', children }) {
-  return (
-    <section className={`${styles.slide} ${light ? styles.light : styles.dark} ${className}`}>
-      {children}
-      <footer className={styles.footer} aria-hidden="true">
-        <span>NAXUM · MOTION DESIGN SYSTEM</span>
-        <span>{page} / 15</span>
-      </footer>
-    </section>
-  )
-}
-
-function Eyebrow({ children }) {
-  return (
-    <p className={styles.eyebrow}>
-      <img src={`${A}dot.svg`} alt="" className={styles.eyebrowDot} />
-      {children}
-    </p>
-  )
-}
-
-// The deck's headline artwork (outlined Helvena), at its design width.
-function Headline({ n, w, h, children }) {
-  return (
-    <h3 className={styles.headline}>
-      <img src={`${A}h${String(n).padStart(2, '0')}.svg`} alt={children} width={w} height={h} style={{ '--w': w }} />
-    </h3>
-  )
-}
-
-function Img({ name, w, h, className = '', alt = '' }) {
-  return <img className={`${styles.img} ${className}`} src={`${A}${name}.webp`} alt={alt} width={w} height={h} loading="lazy" />
-}
 
 /*
   A film card: a short silent preview loops in it (only while it's on screen, so off-screen
@@ -264,19 +232,6 @@ function Idea() {
         <code className={styles.codeComment}>// every frame is a pure function of time</code>
       </p>
     </Slide>
-  )
-}
-
-// A slide's top row: eyebrow and headline on the left, the lead paragraph on the right.
-function Header({ eyebrow, headline, children }) {
-  return (
-    <div className={styles.header}>
-      <div>
-        <Eyebrow>{eyebrow}</Eyebrow>
-        {headline}
-      </div>
-      <p className={styles.bodyL}>{children}</p>
-    </div>
   )
 }
 

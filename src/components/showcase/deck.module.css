@@ -848,6 +848,338 @@
   font-size: max(18px, calc(30 * var(--u)));
 }
 
+/* ── naxum.com case study ────────────────────────────── */
+
+.monoLines {
+  display: flex;
+  flex-direction: column;
+  gap: max(4px, calc(10 * var(--u)));
+}
+
+/* Cover: the words on the left, the new home page with the old one overlapping its corner. */
+.siteCover {
+  display: grid;
+  grid-template-columns: minmax(0, 760fr) minmax(0, 900fr);
+  align-items: end;
+  column-gap: calc(120 * var(--u));
+  row-gap: 24px;
+}
+
+.sitePair {
+  position: relative;
+  padding: 0 0 max(30px, calc(60 * var(--u))) 12%;
+}
+
+.sitePair figure {
+  position: relative;
+  margin: 0;
+}
+
+.sitePairBefore {
+  position: absolute !important;
+  bottom: 0;
+  left: 0;
+  width: 52%;
+}
+
+/* A dark pill naming a screenshot, on its top-left corner. */
+.tag {
+  position: absolute;
+  top: max(8px, calc(18 * var(--u)));
+  left: max(8px, calc(16 * var(--u)));
+  padding: max(4px, calc(8 * var(--u))) max(8px, calc(14 * var(--u)));
+  border-radius: 999px;
+  background: var(--night);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(9px, calc(15 * var(--u)));
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.siteQuote {
+  margin: max(8px, calc(20 * var(--u))) 0 0;
+  color: var(--blue-200);
+  font-size: max(20px, calc(34 * var(--u)));
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.siteCards {
+  display: flex;
+  flex-direction: column;
+  gap: max(12px, calc(20 * var(--u)));
+  margin: max(0px, calc(130 * var(--u))) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.siteCardTitle {
+  margin: 0;
+  font-size: max(17px, calc(26 * var(--u)));
+  font-weight: 600;
+  line-height: 1.38;
+  letter-spacing: -0.015em;
+}
+
+.light .siteCardTitle {
+  color: var(--ink);
+}
+
+/* Page by page: the old page with the new one laid over its lower part. */
+.beforeAfterStack {
+  display: flex;
+  flex-direction: column;
+  gap: max(6px, calc(4 * var(--u)));
+}
+
+.afterOver {
+  position: relative;
+  margin-top: -28%;
+  margin-left: 0;
+}
+
+/* The 23 days: a blue line, a dot per event at its place, labels above or below on a stem. */
+.timeline {
+  position: relative;
+  height: max(260px, calc(380 * var(--u)));
+  margin: max(10px, calc(30 * var(--u))) max(80px, calc(130 * var(--u))) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: calc(-1 * max(80px, calc(130 * var(--u))));
+  left: 0;
+  height: max(3px, calc(4 * var(--u)));
+  translate: 0 -50%;
+  border-radius: 2px;
+  background: var(--blue-400);
+}
+
+.event {
+  position: absolute;
+  left: var(--at);
+  display: flex;
+  flex-direction: column;
+  gap: max(4px, calc(6 * var(--u)));
+  width: max(120px, calc(230 * var(--u)));
+}
+
+.eventDot {
+  position: absolute;
+  left: 0;
+  width: max(30px, calc(50 * var(--u)));
+  height: auto;
+  translate: -50% -50%;
+}
+
+/* Above the line: the label sits on a stem that rises from the dot. */
+.eventUp {
+  bottom: 50%;
+  padding-bottom: max(40px, calc(70 * var(--u)));
+  padding-left: max(8px, calc(10 * var(--u)));
+}
+
+.eventUp .eventDot {
+  top: 100%;
+}
+
+.eventDown {
+  top: 50%;
+  padding-top: max(40px, calc(70 * var(--u)));
+  padding-left: max(8px, calc(10 * var(--u)));
+}
+
+.eventDown .eventDot {
+  top: 0;
+}
+
+/* The stem: a short line between the dot and its label. */
+.eventUp::before,
+.eventDown::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  width: 2px;
+  height: max(32px, calc(56 * var(--u)));
+  background: var(--blue-400);
+}
+
+.eventUp::before {
+  bottom: calc(max(14px, calc(14 * var(--u))));
+}
+
+.eventDown::before {
+  top: calc(max(14px, calc(14 * var(--u))));
+}
+
+/* Near the right end, the label runs leftwards so it stays on the slide. */
+.eventEnd {
+  align-items: flex-end;
+  padding-left: 0;
+  padding-right: max(8px, calc(10 * var(--u)));
+  translate: -100% 0;
+  text-align: right;
+}
+
+.eventEnd .eventDot {
+  left: 100%;
+}
+
+.eventEnd::before {
+  left: auto;
+  right: -1px;
+}
+
+.eventText {
+  font-size: max(14px, calc(20 * var(--u)));
+  line-height: 1.5;
+}
+
+.pills .pillCoral {
+  background: #fff;
+  color: var(--coral);
+}
+
+/* Brand first: the colour board, and the type board a little lower beside it. */
+.brandPair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: max(12px, calc(20 * var(--u)));
+}
+
+.brandLow {
+  margin-top: 24%;
+}
+
+.phones {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: max(12px, calc(30 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A phone: the screenshot inside a thick ink bezel with round corners. */
+.phone {
+  aspect-ratio: 300 / 650;
+  object-fit: cover;
+  border: max(4px, calc(8 * var(--u))) solid var(--ink);
+  border-radius: max(18px, calc(36 * var(--u)));
+  box-shadow: 0 calc(30 * var(--u)) calc(70 * var(--u)) calc(-20 * var(--u)) rgba(28, 69, 97, 0.2);
+}
+
+/* The blog's path: four cards joined by arrows. */
+.flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: max(18px, calc(50 * var(--u)));
+  margin: max(6px, calc(20 * var(--u))) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flow li {
+  position: relative;
+  min-height: max(140px, calc(200 * var(--u)));
+}
+
+.flow li + li::before {
+  content: '→';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: max(18px, calc(50 * var(--u)));
+  translate: 0 -50%;
+  color: var(--blue-400);
+  font-size: max(18px, calc(34 * var(--u)));
+  font-weight: 600;
+  text-align: center;
+}
+
+.flowText {
+  margin: 0;
+  font-size: max(16px, calc(24 * var(--u)));
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+}
+
+/* A salesperson's link, big, their name in blue. */
+.urlPill {
+  display: inline-block;
+  max-width: 100%;
+  margin: 0 0 max(10px, calc(20 * var(--u)));
+  padding: max(14px, calc(26 * var(--u))) max(20px, calc(36 * var(--u)));
+  overflow-wrap: anywhere;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-size: max(22px, calc(46 * var(--u)));
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  box-shadow: 0 calc(20 * var(--u)) calc(50 * var(--u)) calc(-16 * var(--u)) rgba(28, 69, 97, 0.14);
+}
+
+.urlPill span {
+  color: var(--blue-600);
+}
+
+/* The redirect table: old address → new address, and its status. */
+.redirects {
+  gap: max(14px, calc(22 * var(--u)));
+  padding: max(20px, calc(34 * var(--u)));
+}
+
+.redirectRow {
+  display: grid;
+  grid-template-columns: minmax(0, 300fr) 50fr minmax(0, 300fr) 80fr;
+  gap: 8px;
+  margin: 0;
+  font-family: 'Geist Mono', monospace;
+  font-size: max(11px, calc(19 * var(--u)));
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  overflow-wrap: anywhere;
+}
+
+.redirectHead {
+  color: var(--ink-400);
+  font-size: max(10px, calc(16 * var(--u)));
+}
+
+.runbookTitle {
+  display: flex;
+  align-items: center;
+  gap: max(10px, calc(14 * var(--u)));
+  margin: 0;
+  color: var(--ink);
+  font-size: max(17px, calc(24 * var(--u)));
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+}
+
+.ownedCard {
+  gap: max(14px, calc(24 * var(--u)));
+  padding: max(24px, calc(44 * var(--u))) max(22px, calc(40 * var(--u)));
+}
+
+.ownedLine {
+  margin: 0;
+  font-size: max(16px, calc(25 * var(--u)));
+  font-weight: 600;
+  line-height: 1.44;
+  letter-spacing: -0.015em;
+}
+
 /* ── Narrow pages (phones, small windows): one column ── */
 
 @container deck (max-width: 760px) {
@@ -888,6 +1220,75 @@
 
   .frames li + li::before {
     display: none;
+  }
+
+  .siteCover {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .siteCards {
+    margin-top: 0;
+  }
+
+  .flow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .flow li + li::before {
+    display: none;
+  }
+
+  .flow li {
+    min-height: 0;
+  }
+
+  .brandLow {
+    margin-top: 12%;
+  }
+
+  /* The timeline turns upright: a line down the left, each event beside its dot. */
+  .timeline {
+    height: auto;
+    margin-right: 0;
+    padding-left: 22px;
+  }
+
+  .timeline::before {
+    top: 0;
+    right: auto;
+    bottom: 0;
+    left: 6px;
+    width: 3px;
+    height: auto;
+    translate: none;
+  }
+
+  .event,
+  .eventEnd {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    width: auto;
+    padding: 0 0 18px;
+    align-items: flex-start;
+    text-align: left;
+    translate: none;
+  }
+
+  .event::before {
+    display: none;
+  }
+
+  .event .eventDot,
+  .eventEnd .eventDot {
+    top: 8px;
+    left: -16px;
+    width: 30px;
+  }
+
+  .redirectRow {
+    grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1fr) 36px;
   }
 
   /* The first film runs across the top; the other four sit two by two under it. */

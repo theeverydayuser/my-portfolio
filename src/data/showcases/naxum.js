@@ -1,4 +1,5 @@
 import MotionCaseStudy from '../../components/showcase/MotionCaseStudy.jsx'
+import NaxumSiteCaseStudy from '../../components/showcase/NaxumSiteCaseStudy.jsx'
 
 /*
   The NaXum showcase: opened from the NaXum book as a full-screen viewer with a side nav
@@ -20,6 +21,11 @@ export const naxum = {
           id: 'motion-design-system',
           title: 'How I used Claude to create a motion design system for marketing',
           Content: MotionCaseStudy,
+        },
+        {
+          id: 'wordpress-to-react',
+          title: 'How I took a corporate site from WordPress to React in 23 days without losing its rankings',
+          Content: NaxumSiteCaseStudy,
         },
       ],
     },

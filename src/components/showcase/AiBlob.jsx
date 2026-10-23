@@ -82,6 +82,8 @@ export default function AiBlob({ mood = 'neutral', skin = 'blue', glasses = true
     let last = 0
     let running = false
     let pointer = { x: 0, y: 0 }
+    // Scrolled out of view, it sleeps: no gaze or blinks to compute for nobody.
+    let visible = true
     const timers = new Set()
     const pokes = []
 
@@ -179,7 +181,7 @@ export default function AiBlob({ mood = 'neutral', skin = 'blue', glasses = true
 
     let gazeIdle = 0
     function onPointerMove(event) {
-      if (event.pointerType === 'touch') return
+      if (event.pointerType === 'touch' || !visible) return
       const rect = el.getBoundingClientRect()
       const w = rect.width || 1
       const h = rect.height || 1
@@ -211,7 +213,7 @@ export default function AiBlob({ mood = 'neutral', skin = 'blue', glasses = true
     // Random, like a person: mostly single blinks, a fifth doubles, one in ten a wink.
     function scheduleBlink() {
       after(2000 + Math.random() * 3000, () => {
-        if (!document.hidden && face.eyeOpen.target > 0.3) {
+        if (visible && !document.hidden && face.eyeOpen.target > 0.3) {
           const roll = Math.random()
           if (roll < 0.1) blinkOnce(true)
           else if (roll < 0.3) {
@@ -244,6 +246,11 @@ export default function AiBlob({ mood = 'neutral', skin = 'blue', glasses = true
       } else wake()
     }
 
+    const seen = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting
+    })
+    seen.observe(el)
+
     applyMood(mood, true)
     el.addEventListener('pointerdown', onPoke)
     document.addEventListener('visibilitychange', onVisibility)
@@ -255,6 +262,7 @@ export default function AiBlob({ mood = 'neutral', skin = 'blue', glasses = true
 
     return () => {
       cancelAnimationFrame(frame)
+      seen.disconnect()
       for (const t of timers) clearTimeout(t)
       timers.clear()
       el.removeEventListener('pointerdown', onPoke)

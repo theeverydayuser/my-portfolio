@@ -32,6 +32,8 @@ export default function Person({ L, onOpen }) {
     let frame = 0
 
     const aim = (event) => {
+      // Only while the pointer is over the room: not behind a window or the open book.
+      if (!(event.target instanceof Element && event.target.closest('[data-room]'))) return
       const head = headRef.current?.getBoundingClientRect()
       if (!head) return
       const reach = Math.max(window.innerWidth, 1) * REACH
