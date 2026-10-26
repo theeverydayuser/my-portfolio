@@ -1,5 +1,7 @@
 import MotionCaseStudy from '../../components/showcase/MotionCaseStudy.jsx'
 import NaxumSiteCaseStudy from '../../components/showcase/NaxumSiteCaseStudy.jsx'
+import VirtualOfficeCaseStudy from '../../components/showcase/VirtualOfficeCaseStudy.jsx'
+import AiCaseStudy from '../../components/showcase/AiCaseStudy.jsx'
 
 /*
   The NaXum showcase: opened from the NaXum book as a full-screen viewer with a side nav
@@ -26,6 +28,16 @@ export const naxum = {
           id: 'wordpress-to-react',
           title: 'How I took a corporate site from WordPress to React in 23 days without losing its rankings',
           Content: NaxumSiteCaseStudy,
+        },
+        {
+          id: 'virtual-office',
+          title: 'How I rebuilt the back office: one template for 35+ brands',
+          Content: VirtualOfficeCaseStudy,
+        },
+        {
+          id: 'ai-v1',
+          title: 'How I took our first AI feature from a one-page vision to its first client in 15 weeks',
+          Content: AiCaseStudy,
         },
       ],
     },

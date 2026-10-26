@@ -1180,9 +1180,958 @@
   letter-spacing: -0.015em;
 }
 
+/* ── The Virtual Office deck ───────────────────────── */
+
+.deck dl,
+.deck dd {
+  margin: 0;
+}
+
+/* Pictures that overlap, each placed by its share of the Figma box (--x, --y, --w). */
+.collage {
+  position: relative;
+  height: 0;
+  padding-bottom: var(--ratio);
+}
+
+.placed,
+.placedArt,
+.placedText {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+}
+
+.placed,
+.placedArt {
+  width: var(--w);
+}
+
+.placedArt {
+  height: auto;
+}
+
+.voSplit {
+  display: grid;
+  grid-template-columns: minmax(0, var(--l, 820fr)) minmax(0, var(--r, 880fr));
+  align-items: start;
+  column-gap: calc(var(--g, 80) * var(--u));
+}
+
+.statXL,
+.statL,
+.statM {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.statXL {
+  font-size: max(40px, calc(88 * var(--u)));
+}
+
+.statL {
+  font-size: max(38px, calc(84 * var(--u)));
+}
+
+.statM {
+  font-size: max(30px, calc(58 * var(--u)));
+  line-height: 1.25;
+}
+
+.bodyM {
+  margin: 0;
+  font-size: max(15px, calc(24 * var(--u)));
+  line-height: 1.5;
+}
+
+/* The old office: six numbers, and the lesson beside them. */
+.oldOffice {
+  display: grid;
+  grid-template-columns: minmax(0, 900fr) minmax(0, 720fr);
+  align-items: start;
+  column-gap: calc(60 * var(--u));
+  row-gap: 20px;
+}
+
+.oldOffice .grid3 {
+  gap: max(12px, calc(20 * var(--u)));
+}
+
+.lessonCard {
+  display: flex;
+  flex-direction: column;
+  gap: max(10px, calc(14 * var(--u)));
+  padding: max(22px, calc(36 * var(--u)));
+  border-radius: max(14px, calc(22 * var(--u)));
+  background: #1d4460;
+}
+
+.lessonTitle {
+  margin: 0;
+  font-size: max(19px, calc(34 * var(--u)));
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.grid5 {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: max(12px, calc(20 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.northQuote {
+  margin: max(8px, calc(24 * var(--u))) 0 0;
+  color: var(--blue-200);
+  font-size: max(36px, calc(84 * var(--u)));
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+.dropRight {
+  margin-top: calc(180 * var(--u));
+}
+
+.shellRow {
+  display: grid;
+  grid-template-columns: minmax(0, 880fr) minmax(0, 760fr);
+  align-items: start;
+  column-gap: calc(40 * var(--u));
+  row-gap: 20px;
+}
+
+.stackList {
+  display: flex;
+  flex-direction: column;
+  gap: max(12px, calc(20 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The craft board: each detail on its own tile, named in a dark pill. */
+.detail {
+  position: relative;
+  aspect-ratio: 405 / 260;
+  border-radius: max(10px, calc(18 * var(--u)));
+  overflow: hidden;
+  background: #f6f8fa;
+  box-shadow: 0 calc(24 * var(--u)) calc(60 * var(--u)) rgba(0, 10, 20, 0.3);
+}
+
+.detailDark {
+  background: #111417;
+}
+
+.detail img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.detailLabel {
+  position: absolute;
+  bottom: max(6px, calc(4 * var(--u)));
+  left: max(6px, calc(12 * var(--u)));
+  padding: max(3px, calc(5 * var(--u))) max(8px, calc(10 * var(--u)));
+  border-radius: 999px;
+  background: var(--night-panel);
+  color: var(--blue-200);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(9px, calc(13 * var(--u)));
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+/* The 16 days: a tick for every day, the milestones on stems above and below the line. */
+.dayline {
+  position: relative;
+  height: max(200px, calc(250 * var(--u)));
+  margin: max(10px, calc(30 * var(--u))) calc(40 * var(--u)) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dayline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: max(3px, calc(4 * var(--u)));
+  translate: 0 -50%;
+  border-radius: 2px;
+  background: var(--blue-200);
+}
+
+.dayTick,
+.dayEvent {
+  position: absolute;
+  left: var(--at);
+}
+
+.dayTick {
+  top: 50%;
+  line-height: 0;
+}
+
+.dayTick img {
+  width: max(5px, calc(8 * var(--u)));
+  translate: -50% -50%;
+}
+
+.dayEvent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: max(3px, calc(6 * var(--u)));
+  translate: -50% 0;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.dayUp {
+  bottom: 50%;
+  padding-bottom: max(28px, calc(52 * var(--u)));
+}
+
+.dayDown {
+  top: 50%;
+  padding-top: max(34px, calc(62 * var(--u)));
+}
+
+.dayUp::before,
+.dayDown::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  height: max(22px, calc(46 * var(--u)));
+  translate: -50% 0;
+  background: var(--blue-400);
+}
+
+.dayUp::before {
+  bottom: max(4px, calc(4 * var(--u)));
+}
+
+.dayDown::before {
+  top: max(6px, calc(8 * var(--u)));
+}
+
+.dayDot {
+  position: absolute;
+  left: 50%;
+  z-index: 1;
+  width: max(11px, calc(16 * var(--u)));
+  translate: -50% -50%;
+}
+
+.dayUp .dayDot {
+  top: 100%;
+}
+
+.dayDown .dayDot {
+  top: 0;
+}
+
+.dayLast .dayDot {
+  width: max(18px, calc(28 * var(--u)));
+}
+
+.dayDate {
+  color: var(--ink-400);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(9px, calc(15 * var(--u)));
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.dayText {
+  font-size: max(12px, calc(24 * var(--u)));
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+.statRow {
+  display: grid;
+  grid-template-columns: repeat(3, calc(var(--col, 360) * var(--u)));
+  row-gap: max(24px, calc(60 * var(--u)));
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: max(6px, calc(10 * var(--u)));
+  margin: calc(-14 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chips li {
+  padding: max(5px, calc(8 * var(--u))) max(10px, calc(14 * var(--u)));
+  border-radius: 999px;
+  background: var(--night-panel);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(10px, calc(18 * var(--u)));
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+/* Light and dark: the dark screen rises beside the headline. */
+.liftUp {
+  margin-top: calc(-130 * var(--u));
+}
+
+/* Fourteen modules: two rows of screens running off the slide, the second shifted left. */
+.moduleRows {
+  display: flex;
+  flex-direction: column;
+  gap: max(8px, calc(10 * var(--u)));
+}
+
+.moduleRow {
+  display: flex;
+  gap: max(10px, calc(20 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.moduleRow + .moduleRow {
+  margin-left: calc(-218 * var(--u));
+}
+
+.moduleRow li {
+  flex: none;
+  width: max(150px, calc(416 * var(--u)));
+}
+
+.screen {
+  aspect-ratio: 416 / 260;
+  object-fit: cover;
+  object-position: top left;
+}
+
+/* 143 popups → one dialog → what the one primitive made possible. */
+.dialogRow {
+  display: grid;
+  grid-template-columns: minmax(0, 382fr) minmax(0, 148fr) minmax(0, 560fr) minmax(0, 590fr);
+  align-items: start;
+  row-gap: 24px;
+}
+
+.dialogRow > .figure:first-child {
+  margin-top: calc(30 * var(--u));
+}
+
+.popups {
+  display: grid;
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+  gap: max(4px, calc(9 * var(--u))) max(4px, calc(8 * var(--u)));
+}
+
+.popups span {
+  aspect-ratio: 22 / 16;
+  border-radius: max(2px, calc(4 * var(--u)));
+  background: var(--ink-400);
+}
+
+.popups .popupCoral {
+  background: var(--coral);
+}
+
+.dialogArrow {
+  justify-self: center;
+  margin-top: calc(130 * var(--u));
+  color: var(--blue-600);
+  font-size: max(30px, calc(72 * var(--u)));
+  font-weight: 600;
+  line-height: 1;
+}
+
+.dialogStats {
+  display: flex;
+  flex-direction: column;
+  gap: max(18px, calc(64 * var(--u)));
+  padding-left: calc(110 * var(--u));
+}
+
+.dialogStats .stat {
+  margin-bottom: max(4px, calc(8 * var(--u)));
+}
+
+/* Fix once: the template hub and six brands around it, lifted beside the numbers. */
+.hubDiagram {
+  margin-top: calc(-135 * var(--u));
+}
+
+.hubLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  color: var(--silver);
+}
+
+.selfServe {
+  display: grid;
+  grid-template-columns: minmax(0, 1040fr) minmax(0, 540fr);
+  align-items: start;
+  column-gap: calc(100 * var(--u));
+  row-gap: 28px;
+}
+
+.taskPills {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: max(10px, calc(20 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.taskPills li {
+  display: flex;
+  align-items: center;
+  gap: max(8px, calc(12 * var(--u)));
+  padding: max(8px, calc(10 * var(--u))) max(12px, calc(20 * var(--u)));
+  border-radius: max(10px, calc(16 * var(--u)));
+  background: #fff;
+  box-shadow: 0 calc(8 * var(--u)) calc(24 * var(--u)) rgba(28, 69, 97, 0.08);
+  font-size: max(14px, calc(22 * var(--u)));
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.taskPills img {
+  width: max(7px, calc(10 * var(--u)));
+}
+
+.settingsLine {
+  margin: max(10px, calc(40 * var(--u))) 0 0;
+  font-size: max(26px, calc(52 * var(--u)));
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+/* Less code: a legend, then old and new as a pair of bars per measure. */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: max(10px, calc(20 * var(--u)));
+  margin: max(0px, calc(80 * var(--u))) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: max(8px, calc(12 * var(--u)));
+  padding: max(5px, calc(8 * var(--u))) max(10px, calc(14 * var(--u)));
+  border-radius: 999px;
+  background: var(--night-panel);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(10px, calc(16 * var(--u)));
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.legend img {
+  width: max(7px, calc(10 * var(--u)));
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: max(18px, calc(48 * var(--u)));
+}
+
+.barRow {
+  display: grid;
+  grid-template-columns: minmax(0, 400fr) minmax(0, 1280fr);
+  align-items: center;
+  row-gap: 8px;
+}
+
+.barPair {
+  display: flex;
+  flex-direction: column;
+  gap: max(4px, calc(8 * var(--u)));
+}
+
+/* The longest bar fills 1000 of the 1280 deck pixels, leaving room for its value. */
+.barLine {
+  display: flex;
+  align-items: center;
+  gap: max(8px, calc(16 * var(--u)));
+  width: 78.125%;
+  white-space: nowrap;
+}
+
+.bar {
+  flex: none;
+  width: var(--v);
+  height: max(8px, calc(24 * var(--u)));
+  border-radius: 999px;
+}
+
+.barOld {
+  background: var(--coral);
+  opacity: 0.85;
+}
+
+.barNew {
+  background: var(--blue-400);
+}
+
+/* Review that runs itself: the commit hook's proof, and the loop Claude Code runs. */
+.reviewRow {
+  display: grid;
+  grid-template-columns: minmax(0, 860fr) minmax(0, 820fr);
+  align-items: start;
+  column-gap: calc(40 * var(--u));
+  row-gap: 28px;
+}
+
+.terminal {
+  display: flex;
+  flex-direction: column;
+  padding: max(16px, calc(26 * var(--u))) max(18px, calc(36 * var(--u))) max(20px, calc(40 * var(--u)));
+  border-radius: max(14px, calc(22 * var(--u)));
+  background: var(--night);
+  box-shadow: 0 calc(24 * var(--u)) calc(60 * var(--u)) rgba(0, 10, 20, 0.25);
+  color: var(--silver);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(11px, calc(22 * var(--u)));
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: 0.12em;
+}
+
+.terminal p {
+  margin: 0;
+}
+
+.terminalDots {
+  display: flex;
+  gap: max(6px, calc(10 * var(--u)));
+  margin-bottom: max(14px, calc(36 * var(--u))) !important;
+  line-height: 0;
+}
+
+.terminalDots img {
+  width: max(8px, calc(12 * var(--u)));
+}
+
+.terminal dl {
+  display: flex;
+  flex-direction: column;
+  gap: max(10px, calc(21 * var(--u)));
+  margin: max(14px, calc(27 * var(--u))) 0 max(18px, calc(41 * var(--u)));
+}
+
+.terminal dl div {
+  display: grid;
+  grid-template-columns: minmax(0, 344fr) minmax(0, 444fr);
+  column-gap: 12px;
+}
+
+.terminal dt span {
+  display: inline-block;
+  width: 1.5em;
+}
+
+.loop {
+  position: relative;
+  width: min(100%, max(240px, calc(440 * var(--u))));
+  aspect-ratio: 1;
+  margin: calc(20 * var(--u)) auto 0;
+}
+
+.loopRing {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.loopCentre {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  text-align: center;
+}
+
+.loopTitle {
+  font-size: max(20px, calc(40 * var(--u)));
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+.loopStep {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  padding: max(6px, calc(14 * var(--u))) max(12px, calc(20 * var(--u)));
+  translate: -50% -50%;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 calc(8 * var(--u)) calc(24 * var(--u)) rgba(28, 69, 97, 0.08);
+  font-size: max(13px, calc(24 * var(--u)));
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.loopLead {
+  background: var(--blue-600);
+  color: #fff;
+}
+
+/* ── The AI V1 deck ─────────────────────────────────── */
+
+.pre {
+  white-space: pre;
+}
+
+/* Each picture column of a split drops by --drop deck pixels to meet the deck's layout. */
+.aiDrop {
+  margin-top: calc(var(--drop, 0) * var(--u));
+}
+
+.aiTile {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: max(10px, calc(14 * var(--u)));
+  background: var(--night-panel);
+}
+
+.aiTile img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 546 / 150;
+  object-fit: cover;
+}
+
+.aiTile div {
+  display: flex;
+  flex-direction: column;
+  gap: max(6px, calc(8 * var(--u)));
+  padding: max(14px, calc(22 * var(--u))) max(14px, calc(24 * var(--u))) max(18px, calc(26 * var(--u)));
+}
+
+.aiTileTitle {
+  margin: 0;
+  color: var(--paper);
+  font-size: max(15px, calc(24 * var(--u)));
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.aiSteps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: max(10px, calc(50 * var(--u)));
+  margin: max(10px, calc(30 * var(--u))) 0 max(4px, calc(20 * var(--u)));
+  padding: 0;
+  list-style: none;
+}
+
+.aiSteps li {
+  padding: max(8px, calc(16 * var(--u))) max(14px, calc(28 * var(--u)));
+  border-radius: 999px;
+  background: #fff;
+  font-size: max(14px, calc(24 * var(--u)));
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  white-space: pre;
+}
+
+.aiSteps .aiStepLead {
+  background: var(--blue-600);
+  color: var(--paper);
+}
+
+/* The eight moods: a live mascot on each white card, its mood named in the corner. */
+.aiMood {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  aspect-ratio: 405 / 250;
+  border-radius: max(10px, calc(14 * var(--u)));
+  background: #fff;
+}
+
+.aiMoodBlob {
+  width: 40%;
+  margin-top: 4%;
+}
+
+.aiMood span {
+  position: absolute;
+  bottom: max(8px, calc(12 * var(--u)));
+  left: max(12px, calc(24 * var(--u)));
+}
+
+.statHuge {
+  margin: 0;
+  font-size: max(52px, calc(130 * var(--u)));
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.statGiant {
+  font-size: max(60px, calc(150 * var(--u)));
+  line-height: 1;
+}
+
+.aiPrices {
+  display: flex;
+  flex-direction: column;
+  gap: max(6px, calc(30 * var(--u)));
+  margin-top: max(0px, calc(10 * var(--u)));
+}
+
+.aiPrices div {
+  display: grid;
+  grid-template-columns: calc(280 * var(--u)) minmax(0, 1fr);
+  align-items: center;
+  column-gap: 16px;
+}
+
+.aiPop {
+  width: min(100%, max(220px, calc(420 * var(--u))));
+  margin-top: max(10px, calc(60 * var(--u)));
+}
+
+.aiBullets {
+  display: flex;
+  flex-direction: column;
+  gap: max(14px, calc(48 * var(--u)));
+  margin: max(10px, calc(40 * var(--u))) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aiBullets li {
+  display: flex;
+  align-items: center;
+  gap: max(12px, calc(20 * var(--u)));
+  color: var(--paper);
+  font-size: max(16px, calc(30 * var(--u)));
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.aiBullets img {
+  flex: none;
+  width: max(8px, calc(12 * var(--u)));
+}
+
+.aiTested {
+  display: flex;
+  flex-direction: column;
+  gap: max(24px, calc(70 * var(--u)));
+}
+
+.aiTested dd {
+  margin-top: max(6px, calc(15 * var(--u)));
+  color: var(--ink-600);
+}
+
+.bugCard {
+  display: flex;
+  flex-direction: column;
+  gap: max(4px, calc(6 * var(--u)));
+  padding: max(14px, calc(22 * var(--u))) max(18px, calc(32 * var(--u)));
+  border-radius: max(10px, calc(14 * var(--u)));
+  background: #fff;
+}
+
+.bugTitle {
+  margin: 0;
+  font-size: max(16px, calc(28 * var(--u)));
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+/* The close: the headline, a live mascot beside it, the line and the dark screen below. */
+.aiClose {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: max(14px, calc(28 * var(--u)));
+}
+
+.aiClose .headline {
+  margin-top: calc(78 * var(--u));
+}
+
+.aiCloseMascot {
+  position: absolute;
+  top: calc(190 * var(--u));
+  left: calc(1428 * var(--u));
+  width: max(90px, calc(190 * var(--u)));
+}
+
+.aiClose .voSplit .img {
+  margin-top: calc(-20 * var(--u));
+}
+
 /* ── Narrow pages (phones, small windows): one column ── */
 
 @container deck (max-width: 760px) {
+  /* The AI V1 deck. */
+  .aiDrop,
+  .aiClose .voSplit .img {
+    margin-top: 0;
+  }
+
+  .aiPrices div {
+    grid-template-columns: 90px minmax(0, 1fr);
+  }
+
+  .aiCloseMascot {
+    position: static;
+    align-self: flex-end;
+    margin-top: -60px;
+  }
+
+  .aiClose .headline {
+    margin-top: 0;
+  }
+
+  /* The Virtual Office deck, one column. */
+  .voSplit,
+  .oldOffice,
+  .shellRow,
+  .selfServe,
+  .reviewRow,
+  .dialogRow,
+  .barRow {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 22px;
+  }
+
+  .dropRight,
+  .liftUp,
+  .hubDiagram,
+  .dialogRow > .figure:first-child,
+  .dialogArrow {
+    margin-top: 0;
+  }
+
+  .dialogArrow {
+    rotate: 90deg;
+  }
+
+  .dialogStats {
+    padding-left: 0;
+  }
+
+  .grid5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .statRow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 12px;
+  }
+
+  /* A caption laid over a collage moves under it, where it has room to wrap. */
+  .collage:has(.placedText) {
+    margin-bottom: 52px;
+  }
+
+  .placedText {
+    top: 100%;
+    left: 0;
+    margin-top: 10px;
+  }
+
+  .terminal {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+
+  .terminal dl div {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .barLine {
+    width: 72%;
+  }
+
+  /* The 16 days turn upright: a line down the left, each milestone beside its dot. */
+  .dayline {
+    height: auto;
+    margin: 0;
+    padding-left: 22px;
+  }
+
+  .dayline::before {
+    top: 0;
+    right: auto;
+    bottom: 0;
+    left: 6px;
+    width: 3px;
+    height: auto;
+    translate: none;
+  }
+
+  .dayTick {
+    display: none;
+  }
+
+  .dayEvent {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 10px;
+    padding: 0 0 14px;
+    translate: none;
+    text-align: left;
+  }
+
+  .dayEvent::before {
+    display: none;
+  }
+
+  .dayEvent .dayDot {
+    top: 9px;
+    left: -15px;
+    width: 14px;
+  }
+
+  .dayLast .dayDot {
+    width: 20px;
+  }
+
   .cover,
   .header,
   .split,
@@ -1311,8 +2260,15 @@
 }
 
 @container deck (max-width: 480px) {
+  /* Live mascots stay two to a row; big numbers get room to breathe. */
+  .grid4:has(.aiMood),
+  .statRow:has(.statHuge) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .grid3,
-  .grid4 {
+  .grid4,
+  .grid5 {
     grid-template-columns: minmax(0, 1fr);
   }
 }
