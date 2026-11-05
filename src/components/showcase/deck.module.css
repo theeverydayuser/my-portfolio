@@ -2000,9 +2000,551 @@
   margin-top: calc(-20 * var(--u));
 }
 
+/* ── The design-system deck ─────────────────────────── */
+
+.statCols {
+  grid-template-columns: var(--cols);
+}
+
+/* The cover's token card, over the brand screens. */
+.tokenCard {
+  padding: max(14px, calc(30 * var(--u))) max(14px, calc(32 * var(--u)));
+  border-radius: max(12px, calc(20 * var(--u)));
+  background: var(--night-panel);
+  box-shadow: 0 calc(24 * var(--u)) calc(60 * var(--u)) rgba(0, 10, 20, 0.22);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(10px, calc(20 * var(--u)));
+  font-weight: 500;
+}
+
+.tokenCard p {
+  margin: 0;
+}
+
+.tokenCardTitle {
+  color: var(--blue-400);
+  font-size: max(9px, calc(16 * var(--u)));
+  letter-spacing: 0.12em;
+}
+
+.tokenCard ul {
+  margin: max(10px, calc(26 * var(--u))) 0 max(10px, calc(28 * var(--u)));
+  padding: 0;
+  list-style: none;
+}
+
+.tokenCard li {
+  display: flex;
+  align-items: center;
+  gap: max(8px, calc(16 * var(--u)));
+  padding: max(4px, calc(13 * var(--u))) 0;
+  color: var(--paper);
+}
+
+.tokenCard li + li {
+  box-shadow: inset 0 1px 0 rgba(162, 164, 163, 0.25);
+}
+
+.tokenCard li span {
+  flex: none;
+  width: max(14px, calc(28 * var(--u)));
+  aspect-ratio: 1;
+  border-radius: max(4px, calc(8 * var(--u)));
+}
+
+.swatchSurface {
+  box-shadow: inset 0 0 0 1.5px var(--ink-400);
+}
+
+.swatchPaper {
+  background: var(--paper);
+}
+
+.swatchBlue {
+  background: var(--blue-400);
+}
+
+.swatchGreen {
+  background: var(--green);
+}
+
+.swatchCoral {
+  background: var(--coral);
+}
+
+/* The problem: three pages styled by hand, tilted like loose sheets. */
+.handCard {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  display: flex;
+  flex-direction: column;
+  gap: max(6px, calc(18 * var(--u)));
+  width: 72.9%;
+  aspect-ratio: 620 / 300;
+  padding: max(12px, calc(28 * var(--u))) max(14px, calc(32 * var(--u)));
+  rotate: var(--tilt);
+  border-radius: max(12px, calc(20 * var(--u)));
+  background: #fff;
+  box-shadow: 0 calc(12 * var(--u)) calc(40 * var(--u)) rgba(0, 10, 20, 0.08);
+  font-family: 'Geist Mono', monospace;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.handCard p {
+  margin: 0 0 max(2px, calc(8 * var(--u)));
+  font-size: max(8px, calc(16 * var(--u)));
+}
+
+.handCard code {
+  font: inherit;
+  font-size: max(10px, calc(24 * var(--u)));
+  line-height: 1.25;
+}
+
+/* A milestone line without stems, its end labels flush with the line's ends. */
+.daylinePlain::before {
+  background: var(--blue-400);
+  opacity: 0.5;
+}
+
+.daylinePlain .dayEvent::before {
+  display: none;
+}
+
+.daylinePlain .dayUp {
+  padding-bottom: max(20px, calc(42 * var(--u)));
+}
+
+.daylinePlain .dayDown {
+  padding-top: max(28px, calc(64 * var(--u)));
+}
+
+.dayStart {
+  align-items: flex-start;
+  translate: 0 0;
+  text-align: left;
+}
+
+.dayStart .dayDot {
+  left: 0;
+}
+
+.dayEnd {
+  align-items: flex-end;
+  translate: -100% 0;
+  text-align: right;
+}
+
+.dayEnd .dayDot {
+  left: 100%;
+}
+
+.dsJobs {
+  gap: max(8px, calc(16 * var(--u)));
+}
+
+.dsJobs li {
+  display: flex;
+  flex-direction: column;
+  gap: max(8px, calc(15 * var(--u)));
+  min-height: calc(140 * var(--u));
+  padding: max(10px, calc(20 * var(--u))) max(12px, calc(22 * var(--u)));
+  border-radius: max(10px, calc(16 * var(--u)));
+  background: #fff;
+  box-shadow: 0 calc(12 * var(--u)) calc(40 * var(--u)) rgba(0, 10, 20, 0.08);
+  font-size: max(13px, calc(22 * var(--u)));
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.dsRules {
+  gap: max(14px, calc(30 * var(--u)));
+}
+
+.dsRules li {
+  display: flex;
+  flex-direction: column;
+  gap: max(6px, calc(14 * var(--u)));
+  padding: max(18px, calc(36 * var(--u))) max(18px, calc(40 * var(--u)));
+  border-radius: max(12px, calc(20 * var(--u)));
+  background: var(--night-panel);
+  box-shadow: 0 calc(24 * var(--u)) calc(60 * var(--u)) rgba(0, 10, 20, 0.22);
+}
+
+.dsRules li > span:first-child {
+  font-family: 'Geist Mono', monospace;
+  font-size: max(11px, calc(20 * var(--u)));
+  font-weight: 500;
+}
+
+.dsRules strong {
+  color: var(--paper);
+  font-size: max(18px, calc(36 * var(--u)));
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+/* Token families as a bar chart: the longest (19) fills 86% of the track. */
+.familyCard {
+  padding: max(16px, calc(32 * var(--u))) max(16px, calc(40 * var(--u)));
+  border-radius: max(14px, calc(24 * var(--u)));
+  background: #fff;
+  box-shadow: 0 calc(12 * var(--u)) calc(40 * var(--u)) rgba(0, 10, 20, 0.08);
+}
+
+.familyCard dl {
+  display: flex;
+  flex-direction: column;
+  gap: max(6px, calc(23 * var(--u)));
+  margin-top: max(12px, calc(30 * var(--u)));
+}
+
+.familyCard dl div {
+  display: grid;
+  grid-template-columns: calc(110 * var(--u)) minmax(0, 1fr);
+  align-items: center;
+  column-gap: max(8px, calc(20 * var(--u)));
+  font-family: 'Geist Mono', monospace;
+  font-size: max(10px, calc(20 * var(--u)));
+  font-weight: 500;
+}
+
+.familyCard dt {
+  color: var(--ink-600);
+  text-align: right;
+}
+
+.familyCard dd {
+  display: flex;
+  align-items: center;
+  gap: max(6px, calc(14 * var(--u)));
+}
+
+.familyCard dd span {
+  width: calc(var(--n) * 86%);
+  min-width: 6px;
+  height: max(10px, calc(30 * var(--u)));
+  border-radius: max(4px, calc(8 * var(--u)));
+  background: var(--blue-200);
+}
+
+.familyCard .familyTop {
+  background: var(--blue-600);
+}
+
+/* Type: before and after, as code cards joined by an arrow. */
+.typeCards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: max(10px, calc(18 * var(--u)));
+}
+
+.codeCard {
+  display: flex;
+  flex-direction: column;
+  gap: max(8px, calc(20 * var(--u)));
+  align-self: stretch;
+  padding: max(16px, calc(32 * var(--u))) max(16px, calc(40 * var(--u)));
+  border-radius: max(12px, calc(20 * var(--u)));
+  background: var(--night-panel);
+  box-shadow: 0 calc(24 * var(--u)) calc(60 * var(--u)) rgba(0, 10, 20, 0.22);
+  font-family: 'Geist Mono', monospace;
+  font-weight: 500;
+}
+
+.codeCard code {
+  overflow-wrap: anywhere;
+  color: var(--paper);
+  font: inherit;
+  font-size: max(11px, calc(26 * var(--u)));
+  line-height: 1.25;
+}
+
+.codeCard p {
+  margin: 0;
+}
+
+.codeCardLabel {
+  margin-bottom: max(4px, calc(14 * var(--u))) !important;
+  font-size: max(9px, calc(16 * var(--u)));
+  letter-spacing: 0.08em;
+}
+
+.codeCardMore {
+  margin-top: calc(-14 * var(--u)) !important;
+  font-size: max(9px, calc(18 * var(--u)));
+}
+
+.codeCardLit {
+  gap: max(10px, calc(28 * var(--u)));
+  box-shadow: inset 0 0 0 2px var(--blue-400), 0 calc(24 * var(--u)) calc(60 * var(--u)) rgba(0, 10, 20, 0.22);
+}
+
+.codeCardLit .bodyM {
+  margin-top: max(4px, calc(16 * var(--u)));
+  font-family: 'Plus Jakarta Sans', var(--font-text);
+}
+
+.typeArrow {
+  width: max(20px, calc(40 * var(--u)));
+  height: auto;
+}
+
+/* Themes: six brand skins in a row, each named under it. */
+.skinRow {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: max(6px, calc(16 * var(--u)));
+  max-width: calc(752 * var(--u));
+  margin: max(16px, calc(100 * var(--u))) 0 max(6px, calc(40 * var(--u)));
+  padding: 0;
+  list-style: none;
+}
+
+.skinRow .img {
+  border-radius: max(4px, calc(8 * var(--u)));
+}
+
+.skinRow span {
+  display: block;
+  margin-top: max(6px, calc(14 * var(--u)));
+  color: var(--ink-600);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(9px, calc(15 * var(--u)));
+  font-weight: 500;
+}
+
+.dsParts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: max(28px, calc(100 * var(--u))) max(10px, calc(20 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dsParts img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 410 / 263;
+  object-fit: cover;
+  border-radius: max(10px, calc(18 * var(--u)));
+  box-shadow: 0 calc(24 * var(--u)) calc(60 * var(--u)) rgba(0, 10, 20, 0.22);
+}
+
+.dsParts span {
+  display: block;
+  margin-top: max(8px, calc(17 * var(--u)));
+  font-family: 'Geist Mono', monospace;
+  font-size: max(9px, calc(16 * var(--u)));
+  font-weight: 500;
+}
+
+.artGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: max(14px, calc(60 * var(--u))) max(8px, calc(24 * var(--u)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.artGrid li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: max(6px, calc(22 * var(--u)));
+  padding: calc(24 * var(--u)) 0 max(12px, calc(32 * var(--u)));
+  border-radius: max(12px, calc(20 * var(--u)));
+  background: #fff;
+  box-shadow: 0 calc(12 * var(--u)) calc(40 * var(--u)) rgba(0, 10, 20, 0.08);
+}
+
+.artGrid img {
+  width: 74%;
+  height: auto;
+}
+
+.artGrid span {
+  color: var(--ink-600);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(9px, calc(16 * var(--u)));
+  font-weight: 500;
+}
+
+.artNote {
+  margin-top: max(10px, calc(70 * var(--u)));
+}
+
+/* Guardrails: the unit-test run, three guards passing. */
+.dsTerm {
+  padding: max(16px, calc(28 * var(--u))) max(16px, calc(40 * var(--u))) max(22px, calc(60 * var(--u)));
+  border-radius: max(12px, calc(20 * var(--u)));
+  background: var(--night-panel);
+  box-shadow: 0 calc(24 * var(--u)) calc(60 * var(--u)) rgba(0, 10, 20, 0.22);
+  color: var(--paper);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(11px, calc(24 * var(--u)));
+  font-weight: 500;
+}
+
+.dsTerm p {
+  margin: 0;
+}
+
+.dsTerm .terminalDots img {
+  width: max(8px, calc(14 * var(--u)));
+}
+
+.dsTerm ul {
+  display: flex;
+  flex-direction: column;
+  gap: max(14px, calc(48 * var(--u)));
+  margin: max(18px, calc(48 * var(--u))) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dsTerm li {
+  display: flex;
+  align-items: center;
+  gap: max(10px, calc(24 * var(--u)));
+}
+
+.passBadge {
+  flex: none;
+  padding: max(3px, calc(6 * var(--u))) max(8px, calc(14 * var(--u)));
+  border-radius: max(4px, calc(8 * var(--u)));
+  background: var(--green);
+  color: var(--night);
+  font-size: max(10px, calc(20 * var(--u)));
+}
+
+.dsTermFoot {
+  margin-top: max(20px, calc(66 * var(--u))) !important;
+  padding-top: max(16px, calc(36 * var(--u)));
+  box-shadow: inset 0 1px 0 rgba(162, 164, 163, 0.3);
+}
+
+/* The sweep: three outlined buttons before, one round icon button after. */
+.sweepCard {
+  display: flex;
+  flex-direction: column;
+  padding: max(20px, calc(48 * var(--u)));
+  border-radius: max(14px, calc(24 * var(--u)));
+  background: #fff;
+  box-shadow: 0 calc(12 * var(--u)) calc(40 * var(--u)) rgba(0, 10, 20, 0.08);
+}
+
+.sweepLabel {
+  margin: 0;
+  color: var(--ink-600);
+  font-family: 'Geist Mono', monospace;
+  font-size: max(9px, calc(18 * var(--u)));
+  font-weight: 500;
+}
+
+.sweepBefore,
+.sweepAfter {
+  display: flex;
+  gap: max(10px, calc(24 * var(--u)));
+  margin: max(12px, calc(22 * var(--u))) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sweepBefore li {
+  display: grid;
+  place-items: center;
+  width: calc(180 * var(--u));
+  min-width: 64px;
+  height: max(34px, calc(64 * var(--u)));
+  border-radius: max(8px, calc(12 * var(--u)));
+  box-shadow: inset 0 0 0 2px var(--ink-600);
+  color: var(--ink-600);
+  font-size: max(13px, calc(24 * var(--u)));
+  font-weight: 600;
+}
+
+.sweepAfterLabel {
+  margin-top: max(24px, calc(104 * var(--u)));
+  padding-top: max(20px, calc(40 * var(--u)));
+  box-shadow: inset 0 1px 0 var(--blue-200);
+}
+
+.sweepAfter li {
+  display: grid;
+  place-items: center;
+  width: max(36px, calc(72 * var(--u)));
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--blue-200);
+}
+
+.sweepAfter img {
+  width: 50%;
+}
+
+.sweepCard .bodyM {
+  margin-top: max(16px, calc(44 * var(--u)));
+}
+
+.sweepRows {
+  width: 100%;
+  height: auto;
+  margin-top: max(16px, calc(28 * var(--u)));
+}
+
 /* ── Narrow pages (phones, small windows): one column ── */
 
 @container deck (max-width: 760px) {
+  /* The design-system deck. */
+  .statCols {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  .dsParts,
+  .artGrid {
+    gap: 14px;
+  }
+
+  .skinRow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: none;
+  }
+
+  .handCard {
+    width: 82%;
+  }
+
+  /* Long mono lines may wrap on a phone. */
+  .pre {
+    white-space: pre-wrap;
+  }
+
+  .tokenCard {
+    left: 38%;
+    width: 62%;
+    padding: 10px;
+    white-space: nowrap;
+  }
+
+  .tokenCard ul {
+    margin: 6px 0;
+  }
+
+  .tokenCard li {
+    padding: 2px 0;
+  }
+
+  .familyCard dl div {
+    grid-template-columns: 64px minmax(0, 1fr);
+  }
+
   /* The AI V1 deck. */
   .aiDrop,
   .aiClose .voSplit .img {

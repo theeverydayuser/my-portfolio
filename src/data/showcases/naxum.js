@@ -2,6 +2,7 @@ import MotionCaseStudy from '../../components/showcase/MotionCaseStudy.jsx'
 import NaxumSiteCaseStudy from '../../components/showcase/NaxumSiteCaseStudy.jsx'
 import VirtualOfficeCaseStudy from '../../components/showcase/VirtualOfficeCaseStudy.jsx'
 import AiCaseStudy from '../../components/showcase/AiCaseStudy.jsx'
+import DesignSystemCaseStudy from '../../components/showcase/DesignSystemCaseStudy.jsx'
 
 /*
   The NaXum showcase: opened from the NaXum book as a full-screen viewer with a side nav
@@ -38,6 +39,11 @@ export const naxum = {
           id: 'ai-v1',
           title: 'How I took our first AI feature from a one-page vision to its first client in 15 weeks',
           Content: AiCaseStudy,
+        },
+        {
+          id: 'design-system',
+          title: 'How I founded the design system every client brand runs on',
+          Content: DesignSystemCaseStudy,
         },
       ],
     },
