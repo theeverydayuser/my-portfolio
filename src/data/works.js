@@ -20,6 +20,10 @@ export const works = [
     preview: { src: '/assets/previews/naxum.mp4', poster: '/assets/previews/naxum.webp' },
     showcase: naxum,
   },
+]
+
+// Off the shelf for now (Mide wants only the NaXum book showing). Move one back into `works` to show it again.
+export const parked = [
   { id: 'blessup-site', title: 'BlessUP', subtitle: 'Brand & Web', cover: 'purple' },
   { id: 'board', title: 'Board', subtitle: 'Chat-first PM', cover: 'sage' },
   { id: 'ai-platform', title: 'AI Layer', subtitle: 'SaaS Product', cover: 'teal' },
